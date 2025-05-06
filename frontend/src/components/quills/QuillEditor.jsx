@@ -1,7 +1,6 @@
 import { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
-import '../styles/quill.css';
+// import '../styles/quill.css';
 
 const toolbarOptions = [
   [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
