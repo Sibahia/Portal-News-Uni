@@ -1,0 +1,17 @@
+---
+import Global from '../icons/global.astro';
+
+const YearDate = new Date().getFullYear();
+---
+<footer 
+class="py-6 px-4 mt-8 md:px-8 w-full
+ bg-linear-to-r from-gd-one to-gd-two rounded-tl-lg rounded-tr-lg">
+    <section class="container mx-auto text-center font-overpass text-primary">
+        <h2 class="font-bold text-lg">Unefa Portal Noticias</h2>
+        <p class="text-base">Desde 1999</p>
+        <p class="text-sm">&copy; {YearDate} - Todos los derechos reservados.</p>
+    </section>
+    <section class="contatiner flex justify-center mx-auto pt-4 list-none">
+        <li><a href=""><Global /></a></li>
+    </section>
+</footer>

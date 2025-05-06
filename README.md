@@ -1,1 +1,1 @@
-Portal Web de Noticias
+Portal Web Noticias
