@@ -20,15 +20,24 @@ const QuillEditor = forwardRef((props, ref) => {
   let quillInstance = null;
 
   useEffect(() => {
-    if (editorRef.current) {
+    if (typeof window !== "undefined") {
       quillInstance = new Quill(editorRef.current, {
         theme: 'snow',
-        modules: {
-          toolbar: toolbarOptions
-        },
+        modules: { toolbar: toolbarOptions },
       });
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     quillInstance = new Quill(editorRef.current, {
+  //       theme: 'snow',
+  //       modules: {
+  //         toolbar: toolbarOptions
+  //       },
+  //     });
+  //   }
+  // }, []);
 
   // Permitir que el componente padre acceda al contenido de Quill
   useImperativeHandle(ref, () => ({

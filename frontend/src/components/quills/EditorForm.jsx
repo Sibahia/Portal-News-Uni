@@ -9,7 +9,7 @@ const EditorForm = () => {
 
     if (quillRef.current) {
         const content = quillRef.current.getContent();
-        const title = document.querySelector('#titulo').value;
+        const title = typeof window !== "undefined" ? document.querySelector('#titulo').value : "";
 
         try {
             const response = await fetch('http://localhost:3000/api/notices', {
