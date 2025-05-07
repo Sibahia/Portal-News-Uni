@@ -1,90 +1,51 @@
----
-import { Image } from 'astro:assets';
----
-
-<div class="container">
-    <div class="grid">
-        <div class="grid-item first bg-primary-light">
+<!-- <section class="flex items-center justify-center container">
+    <article class="grid grid-cols-5 grid-rows-5 gap-4 p-2 w-full h-full">
+        <div class="col-span-3 row-span-2 bg-amber-800">
+            asd
         </div>
-        <div class="grid-item two bg-linear-to-t from-gd-two to-gd-one">
-            <img src="logo.webp" alt="logo de unefa desde 1998" class="p-2 w-full h-full rounded-xl object-cover transition duration-300 hover:scale-102"/>
+        <div class="col-span-2 row-span-2 bg-amber-800">
+            <img src="logo.webp" alt="logo de unefa desde 1998" class="p-2 w-full h-full rounded-xl object-cover transition duration-300 hover:scale-105"/>
         </div>
-        <div class="grid-item three bg-primary-light"><p>Three</p></div>
-        <div class="grid-item four bg-primary-light"><p>four</p></div>
-        <div class="grid-item five bg-primary-light"><p>five</p></div>
-        <div class="grid-item six bg-linear-to-t from-gd-two to-gd-one">
-            <Image src="/imgs-prev/wallpaper.jpeg" alt="" width="1250" height="1250" class="p-2 h-full w-full rounded-xl"/>
+        <div class="col-span-1 row-span-2 bg-gd-one"></div>
+        <div class="col-span-2 row-span-2 bg-gd-one"></div>
+        <div class="col-span-2 row-span-4 bg-gd-one"></div>
+        <div class="col-span-3 row-span-2 bg-gd-one">
+            <img src="/imgs-prev/wallpaper.jpeg" alt="" class="p-2 w-full h-full rounded-xl"/>
         </div>
-    </div>
-</div>
+    </article>
+</section> -->
 
-<style>
-:root {
-    --azul-marino: #003366;
-    --azul-celeste: #3399FF;
-    --gris-claro: #D9D9D9;
-    --blanco-hueso: #F2F2F2;
-    --dorado-suave: #CC9900;
+<!-- <section class="flex items-center justify-center container mx-auto px-4 py-8">
+    <article class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid-rows-5 gap-4 p-2 w-full h-full">
+        <div class="col-span-1 sm:col-span-3 row-span-2 bg-amber-800">
+            asd
+        </div>
+        <div class="col-span-1 sm:col-span-2 row-span-2 bg-amber-800">
+            <img src="logo.webp" alt="logo de unefa desde 1998" class="p-2 w-full h-full rounded-xl object-cover transition duration-300 hover:scale-105"/>
+        </div>
+        <div class="col-span-1 row-span-2 bg-gd-one"></div>
+        <div class="col-span-1 sm:col-span-2 row-span-2 bg-gd-one"></div>
+        <div class="col-span-1 sm:col-span-2 row-span-4 bg-gd-one"></div>
+        <div class="col-span-1 sm:col-span-3 row-span-2 bg-gd-one">
+            <img src="/imgs-prev/wallpaper.jpeg" alt="" class="p-2 w-full h-full rounded-xl"/>
+        </div>
+    </article>
+</section> -->
 
-    --color-olive: #e2e7d8;
-    /* Sombra general */
-    --shadow-main: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
-}
 
-:root {
-    /* Colores personalizados */
-    --azul-marino: #003366;
-    --azul-celeste: #3399FF;
-    --gris-claro: #D9D9D9;
-    --blanco-hueso: #F2F2F2;
-    --dorado-suave: #fcdb7a;
-
-    /* Colores de los elementos */
-    --salmon: rgba(255, 182, 193, 0.5);
-    --broccoli: rgba(173, 255, 47, 0.5);
-    --tamago: rgba(255, 255, 224, 0.5);
-    --pork: rgba(210, 180, 140, 0.5);
-    --edamame: rgba(144, 238, 144, 0.5);
-    --tomato: rgba(255, 160, 122, 0.5);
-
-    /* Sombra general */
-    --shadow-main: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.container {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-.grid {
-    display: grid;
-    height: 100%;
-    width: 100%;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 16px;
-    padding: 8px;
-}
-
-.grid-item {
-    font-family: 'M PLUS 2 Variable', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    box-shadow: var(--shadow-main);
-    color: var(--azul-marino);
-    font-weight: bold;
-}
-
-.first { grid-column: span 3; grid-row: span 2; }
-.two { grid-column: span 2; grid-row: span 2; }
-.three { grid-column: span 1; grid-row: span 2; }
-.four { grid-column: span 2; grid-row: span 2; }
-.five { grid-column: span 2; grid-row: span 4; }
-.six { grid-column: span 3; grid-row: span 2; }
-
-</style>
+<section class="flex items-center justify-center container mx-auto px-4 py-8">
+    <article class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid-rows-5 gap-4 p-2 w-full h-full">
+        <div class="col-span-1 sm:col-span-3 row-span-2 bg-gd-one flex items-center justify-center rounded-xl">
+            <p class="text-white">asd</p>
+        </div>
+        <div class="col-span-1 sm:col-span-2 row-span-2 bg-gd-one flex items-center justify-center rounded-xl">
+            <img src="logo.webp" alt="logo de unefa desde 1998" class="p-2 w-full h-full rounded-xl object-cover transition duration-300 hover:scale-101"/>
+        </div>
+        <div class="col-span-1 row-span-2 bg-gd-one flex items-center justify-center"></div>
+        <div class="col-span-1 sm:col-span-2 row-span-2 bg-gd-one flex items-center justify-center rounded-xl"></div>
+        <div class="col-span-1 sm:col-span-2 row-span-4 bg-gd-one flex items-center justify-center rounded-xl"></div>
+        <div class="col-span-1 sm:col-span-3 row-span-2 bg-gd-one flex items-center justify-center rounded-xl">
+            <img src="/imgs-prev/wallpaper.jpeg" alt="" class="p-2 w-full h-full rounded-xl object-cover transition duration-300 hover:scale-101"/>
+        </div>
+    </article>
+</section>
