@@ -1,15 +1,22 @@
 ---
-import User from "../components/icons/user.astro"
+import User from "../components/icons/User.astro"
 import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout>
     
-    <form action="" class="bg-primary-light p-2">
-            <div class="relative">
-                <input type="text" id="username" class="absolute" required>
-                <User/>
-            </div>
-    </form>
+    <section class="flex items-center justify-center container mx-auto px-4 py-18 md:py-28 max-w-[468px]">
+        <form action="" class="border-1 border-second-light-v2 p-24 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
+            <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gd-two mb-4">Inicio de Sesión</h2>
+                <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
+                    <User/>
+                    <input type="text" id="username" class="outline-none" placeholder="Usuario" required>
+                </div>
+                <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
+                    <User/>
+                    <input type="text" id="username" class="outline-none" placeholder="Contraseña" required>
+                </div>
+        </form>
+    </section>
     
 </Layout>
