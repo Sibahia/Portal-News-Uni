@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const getNotices = async function() {
+	return await fetch("http://localhost:3000/api/notices")
+	.then(res => res.json())
+	.catch(err => console.log(err));
+};
+
+const postNotices = await getNotices();
+---
+
+<Layout>
+	<section class="flex items-center justify-center">
+			{postNotices.map(({ title, autor, content }: {title: string, autor: string, content: string}) => (
+				<article class="w-full container border-1 border-second-light-v2 rounded-xl p-4 m-2">
+				<h2 class="text-center text-2xl text-bold p-2">{title} - {autor}</h2>
+				<div class="flex flex-col items-center" set:html={content}></div>
+				</article>
+			))}
+	</section>
+</Layout>
+
+<style>
+	.ql-align-center {
+		text-align: center;
+		font-size: 12px;
+	}
+</style>
+
