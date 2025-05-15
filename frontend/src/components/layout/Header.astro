@@ -1,11 +1,24 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../assets/unefa.webp';
+---
+
 <header>
     <nav class="flex flex-wrap items-center justify-between mx-auto py-4 px-36 text-lg select-none">
-        <h2 class="font-bold font-overpass uppercase text-xl">
-            <span class="text-second-light">Unefa</span>
-            <span class="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-3 before:bg-azul-celeste">
+        <div class="flex items-center text-lg">
+            <div class="logo">
+                <Image src={logo} alt="Logo de la unefa" width={60} height={20}></Image>
+            </div>
+            <div class="title">
+                <h2 class="font-bold font-overpass uppercase text-xl">
+                <span class="text-second-light">Unefa</span>
+                <span class="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-3 before:bg-azul-celeste">
                 <span class="relative text-white dark:text-gray-950">Noticias</span>
-              </span>
-              </h2>
+                </span>
+            </h2>
+            </div>
+        </div>
+            
             <!-- <span class="text-azul-profundo">Portal</span> <span class="text-black">Noticias</span></h2> -->
         <div class="links font-ubuntu text-gray hover:text-azul-celeste duration-300 ease-in">
             <a href="">Inicio</a>
