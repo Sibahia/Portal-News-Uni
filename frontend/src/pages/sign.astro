@@ -1,22 +1,60 @@
 ---
-import User from "../components/icons/Users.astro"
-import Layout from "../layouts/Layout.astro"
+import User from "../components/icons/Users.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
     
     <section class="flex items-center justify-center container mx-auto px-4 py-18 md:py-28 max-w-[468px]">
-        <form action="" class="border-1 border-second-light-v2 p-24 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
+        <form id="loginForm" action="http://localhost:3000/auth/login" method="post" class="border-1 border-second-light-v2 p-24 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
             <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gd-two mb-4">Inicio de Sesión</h2>
                 <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
                     <User/>
-                    <input type="text" id="username" class="outline-none" placeholder="Usuario" required>
+                    <input type="text" id="user" class="outline-none" placeholder="Usuario" required>
                 </div>
                 <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
                     <User/>
-                    <input type="text" id="username" class="outline-none" placeholder="Contraseña" required>
+                    <input type="text" id="username" class="outline-none" placeholder="Nombre" required>
                 </div>
+                <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
+                    <User/>
+                    <input type="text" id="password" class="outline-none" placeholder="Contraseña" required>
+                </div>
+
+                <button type="submit" class="text-amber-50 px-8 py-2 rounded-md bg-gd-one hover:bg-gd-two transition duration-300">Iniciar</button>
         </form>
     </section>
     
 </Layout>
+
+<script is:inline>
+    document.getElementById("loginForm").addEventListener("submit", sendLoginData);
+
+async function sendLoginData (event) {
+    event.preventDefault();
+
+    const data = {
+        user: document.getElementById('user').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+    }
+
+    fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        } else {
+            console.error('Error al registrar usuario', data.message)
+        }
+    })
+    .catch(error => console.log(error))
+
+}
+</script>

@@ -39,7 +39,6 @@ const QuillEditor = forwardRef((props, ref) => {
   //   }
   // }, []);
 
-  // Permitir que el componente padre acceda al contenido de Quill
   useImperativeHandle(ref, () => ({
     getContent: () => quillInstance.root.innerHTML,
   }));
@@ -49,9 +48,8 @@ const QuillEditor = forwardRef((props, ref) => {
       ref={editorRef}
       style={{
         height: '640px',
-        background: '#1A1F22',
         border: '1px solid #F2EDF80D',
-        color: '#c7c9db',
+        color: '#000',
       }}
     ></div>
   );

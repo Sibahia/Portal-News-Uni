@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { sqlORM } = require('../model/database.js');
+const { sqlORM } = require('../models/database.js');
 
 const NoticesDB = new sqlORM('./database/news.db');
 

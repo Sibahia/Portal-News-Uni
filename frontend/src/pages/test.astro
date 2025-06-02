@@ -1,0 +1,32 @@
+---
+import User from "../components/icons/Users.astro";
+import Lock from "../components/icons/Lock.astro";
+
+import Layout from "../layouts/Layout.astro"
+import Input from "../components/auth/Input.astro";
+import LogoBadge from "../components/badge/Logo.astro";
+---
+
+<Layout>
+    <section class="flex flex-col items-center justify-center cointaner mx-auto p-2 gap-8 max-w-[368px] sm:my-33 md:my-37">
+        <header class="flex items-center gap-x-2">
+            <h1 class="font-ubuntu text-4xl font-bold">UNEFA</h1>
+            <LogoBadge />
+        </header>
+        <form action="registerForm" class="border-1 border-second-light-v2 p-12 gap-2 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
+            <h2 class="text-center text-2xl/9 font-dm font-bold tracking-tight text-gd-two mb-4">Inicio de Sesión</h2>
+            <Input>
+                <User />
+                <input type="text" id="user" class="outline-none text-zinc-800 font-dm" placeholder="Usuario" required>
+            </Input>
+
+            <Input>
+                <Lock />
+                <input type="password" id="password" class="outline-none text-zinc-800 font-dm" placeholder="Contraseña" required>
+            </Input>
+
+            <button type="submit" class="text-amber-50 font-dm text-lg px-8 py-2 rounded-md bg-gd-one hover:bg-gd-two hover:scale-105 transition duration-300 w-full">Iniciar</button>
+        </form>
+
+    </section>
+</Layout>

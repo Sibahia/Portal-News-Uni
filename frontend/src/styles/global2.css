@@ -1,0 +1,30 @@
+@theme {
+    --color-primary: #fff;
+    --color-primary-light: #c7c9db;
+
+    --color-olive: #D8E3C1;
+    --color-olive-light: #e2e7d8;
+    
+    /* from-olive-light to-olive */
+    /* --color-gd-one: #595cff;
+    --color-gd-two: #6f7bf7; */
+    --color-gd-one: #5257e5;
+    --color-gd-two: #4766f4;
+
+    --color-theme: #0e1016;
+    --color-second: #F2EDF80D;
+    --color-second-light: #1A1F22;
+    --color-second-light-v2: #1B1F22;
+
+    --color-azul-celeste: #3399FF;
+    --color-azul-profundo: #0058c1;
+    --color-amarillo-intenso: #ffd000;
+    --color-verde-lima: #a0e548;
+    --color-naranja-quemado: #e45f2b;
+    --color-dorado-suave: #ecc76b;
+    
+    --font-ubuntu: "Ubuntu Mono", monospace;
+    --font-overpass: "Overpass Variable", sans-serif;
+
+    --color-gt-primary: linear-gradient(to right top, #c7c9db, #bad3e3, #b3dcde, #bde2d0, #d8e3c1);
+}

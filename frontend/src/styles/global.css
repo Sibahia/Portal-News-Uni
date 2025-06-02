@@ -11,9 +11,6 @@
     --color-olive: #D8E3C1;
     --color-olive-light: #e2e7d8;
     
-    /* from-olive-light to-olive */
-    /* --color-gd-one: #595cff;
-    --color-gd-two: #6f7bf7; */
     --color-gd-one: #5257e5;
     --color-gd-two: #4766f4;
 
@@ -31,6 +28,7 @@
     
     --font-ubuntu: "Ubuntu Mono", monospace;
     --font-overpass: "Overpass Variable", sans-serif;
+    --font-dm: 'DM Sans Variable', sans-serif;
 
     --color-gt-primary: linear-gradient(to right top, #c7c9db, #bad3e3, #b3dcde, #bde2d0, #d8e3c1);
 }
