@@ -1,28 +1,16 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "../../layouts/Layout.astro";
+
+import { authenticate } from "../../middleware/auth.js";
+
+const response = await authenticate(Astro.request, Astro.redirect);
+
+if (!response.ok) {
+  return Astro.redirect("/error");
+}
 ---
 
 <!-- <script is:inline>
-  const token = localStorage.getItem('token');
-
-  console.log(token);
-
-  if (!token) {
-    window.location.href('/login');
-  } else {
-    fetch('http://localhost:3000/auth/profile', {
-      method: 'GET',
-      headers: { 'Authorization': `${token}` }
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.querySelector('#profile').innerText = `Bienvenido ${data.user.username}`;
-    })
-    .catch(error => console.error('Error:', error));
-}
-</script> -->
-
-<script is:inline>
   const token = localStorage.getItem('token');
 
   if (!token) {
@@ -51,7 +39,7 @@ import Layout from "../layouts/Layout.astro"
       window.location.href = '/login'; // Redirigir si el token es inválido
     });
   }
-</script>
+</script> -->
 
 <Layout>
     <h2 id="profile">Esperando</h2>

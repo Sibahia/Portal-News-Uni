@@ -62,7 +62,6 @@ const EditorForm = () => {
       const content = quillRef.current.getContent()
       const title = typeof window !== "undefined" ? document.querySelector("#titulo").value : ""
 
-      // Create FormData for file upload
       const formData = new FormData()
       formData.append("title", title)
       formData.append("content", content)
@@ -74,7 +73,7 @@ const EditorForm = () => {
       try {
         const response = await fetch("http://localhost:3000/api/notices", {
           method: "POST",
-          body: formData, // Don't set Content-Type header, let browser set it with boundary
+          body: formData,
         })
 
         if (response.ok) {
@@ -86,7 +85,6 @@ const EditorForm = () => {
           }
           removeImage()
 
-          // Show success message (you can implement a toast notification here)
           alert("¡Noticia creada exitosamente!")
         } else {
           console.log("Error al enviar contenido")

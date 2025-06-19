@@ -1,0 +1,49 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+import "../styles/global.css";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Portal de noticias moderno con diseño bento grid" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  </head>
+  <body class="font-sans bg-gray-50 text-gray-900 leading-relaxed">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="text-2xl font-bold text-gray-900">NewsGrid</a>
+          </div>
+          <nav class="hidden md:flex space-x-8">
+            <a href="/" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">Inicio</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">Tecnología</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">Deportes</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">Política</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">Cultura</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="bg-gray-900 text-white mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center">
+          <p class="text-gray-400">&copy; 2024 NewsGrid. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

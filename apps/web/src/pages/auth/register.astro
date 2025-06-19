@@ -1,12 +1,12 @@
 ---
-import User from "../components/icons/Users.astro";
-import Layout from "../layouts/Layout.astro";
+import User from "../../components/icons/Users.astro";
+import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout>
     
     <section class="flex items-center justify-center container mx-auto px-4 py-18 md:py-28 max-w-[468px]">
-        <form id="loginForm" action="http://localhost:3000/auth/login" method="post" class="border-1 border-second-light-v2 p-24 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
+        <form id="registerForm" action="http://localhost:3000/auth/login" method="post" class="border-1 border-second-light-v2 p-24 mx-auto flex flex-col justify-center items-center w-full rounded-xl">
             <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gd-two mb-4">Inicio de Sesión</h2>
                 <div class="relative flex m-4 p-3 border-1 border-second-light-v2 bg-stone-50 rounded-md">
                     <User/>
@@ -27,10 +27,10 @@ import Layout from "../layouts/Layout.astro";
     
 </Layout>
 
-<script is:inline>
-    document.getElementById("loginForm").addEventListener("submit", sendLoginData);
+<script>
+    document.getElementById("registerForm").addEventListener("submit", sendRegisterData);
 
-async function sendLoginData (event) {
+async function sendRegisterData (event) {
     event.preventDefault();
 
     const data = {
@@ -53,6 +53,7 @@ async function sendLoginData (event) {
         } else {
             console.error('Error al registrar usuario', data.message)
         }
+
     })
     .catch(error => console.log(error))
 

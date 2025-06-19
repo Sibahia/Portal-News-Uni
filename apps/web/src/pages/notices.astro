@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/Layout2.astro';
 
 const getNotices = async function() {
 	return await fetch("http://localhost:3000/api/notices")
@@ -10,7 +10,7 @@ const getNotices = async function() {
 const postNotices = await getNotices();
 ---
 
-<Layout>
+<Layout title="Noticias">
 	<section class="flex flex-col items-center justify-center gap-4">
 			{postNotices.notices.map(({ title, autor, content }: {title: string, autor: string, content: string}) => (
 				<article class="w-full flex flex-col gap-12 container border-1 border-second-light-v2 rounded-xl p-12 m-10">

@@ -1,0 +1,27 @@
+---
+const trendingTopics = [
+  { topic: "Inteligencia Artificial", mentions: "25.8K" },
+  { topic: "Sostenibilidad", mentions: "18.3K" },
+  { topic: "Criptomonedas", mentions: "15.7K" },
+  { topic: "Cambio Climático", mentions: "12.4K" },
+];
+---
+
+<section class="mt-12">
+  <h2 class="text-2xl font-bold mb-6 text-gray-900">Tendencias</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    {trendingTopics.map((item, index) => (
+      <div class="bg-white rounded-lg shadow-sm p-4 group cursor-pointer hover:shadow-lg transition-shadow duration-300">
+        <div class="flex items-start space-x-3">
+          <span class="text-2xl font-bold text-gray-300">#{index + 1}</span>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+              {item.topic}
+            </h4>
+            <p class="text-xs text-gray-500">{item.mentions} menciones</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

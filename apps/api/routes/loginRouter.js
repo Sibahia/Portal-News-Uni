@@ -6,6 +6,8 @@ router.post('/', async (req, res) => {
     try {
         const { user, username, password } = req.body;
 
+        console.log(user, password)
+
         if (!user || !username || !password) {
             return res.status(400).json({ message: 'Faltan datos: user, username y password son obligatorios.' });
         }

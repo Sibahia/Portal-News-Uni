@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', upload.single('image'), (req, res) => {
-    console.log(req.body)
+    const { title, autor, content, date } = req.body;
 
     NoticesDB.insert('notices', {
         autor: '',
