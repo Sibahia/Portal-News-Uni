@@ -1,46 +1,20 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-
-import { authenticate } from "../../middleware/auth.js";
-
-const response = await authenticate(Astro.request, Astro.redirect);
-
-if (!response.ok) {
-  return Astro.redirect("/error");
-}
 ---
 
-<!-- <script is:inline>
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    window.location.href = '/login'; // Redirigir si no hay token
-  } else {
-    fetch('/profile', {
-      method: 'GET',
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(response => {
-      if (!response.ok) {
-        // Si el servidor responde con un error, redirigir al usuario
-        throw new Error('Token inválido o expirado');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data && data.user) {
-        document.querySelector('#profile').innerText = `Bienvenido ${data.user.username}`;
-      } else {
-        document.querySelector('#profile').innerText = 'Error al cargar perfil';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      window.location.href = '/login'; // Redirigir si el token es inválido
-    });
-  }
-</script> -->
-
 <Layout>
-    <h2 id="profile">Esperando</h2>
+  <h2 id="profile">Cargando...</h2>
+  <script type="module">
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:3000/auth/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      window.location.href = "/error";
+    } else {
+      document.getElementById("profile").textContent = "Bienvenido, usuario autenticado";
+    }
+  </script>
 </Layout>

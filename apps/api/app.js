@@ -7,8 +7,9 @@ const app = express();
 const PORT = 3000;
 
 const noticesRouter = require('./routes/noticesRouter.js');
-const loginRouter = require('./routes/loginRouter.js');
+const registerRouter = require('./routes/registerRouter.js');
 const authRouter = require('./routes/authRouter.js');
+const loginRouter = require('./routes/login.js');
 
 const CORS_OPTIONS = {
     'origin': '*',
@@ -16,6 +17,7 @@ const CORS_OPTIONS = {
 }
 
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 app.use(cors(CORS_OPTIONS));
 
 app.listen(PORT, () => {
@@ -23,6 +25,7 @@ app.listen(PORT, () => {
 });
 
 app.use('/api/notices', noticesRouter);
+app.use('/auth/register', registerRouter);
 app.use('/auth/login', loginRouter)
 app.use('/auth', authRouter);
 

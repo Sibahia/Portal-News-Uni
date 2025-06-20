@@ -30,7 +30,8 @@ import "../styles/global.css";
 
             <header class="p-4 shadow flex justify-between items-center">
                 <h1 class="text-second-light-v2 text-2xl font-overpass font-bold">Dashboard</h1>
-                <button class="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700">Cerrar sesión</button>
+                <p id="user" class="text-second-light-v2 text-lg font-dm"></p>
+                <!-- <button class="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700">Cerrar sesión</button> -->
             </header>
 
 
@@ -50,3 +51,22 @@ import "../styles/global.css";
 		height: 100%;
 	}
 </style>
+
+<script>
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:3000/auth/profile", {
+    headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(res => {
+        if (!res.ok) {
+        window.location.href = "/error";
+        throw new Error("Error al obtener perfil");
+        }
+        return res.json();
+    })
+    .then(data => {
+        document.getElementById("user").textContent = data.user.user;
+    })
+    .catch(error => { console.error("Error:", error.message); });
+</script>

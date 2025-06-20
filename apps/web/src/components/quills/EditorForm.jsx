@@ -1,8 +1,7 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import QuillEditor from "./QuillEditor.jsx"
-import Button from "../Button.jsx"
 
 const EditorForm = () => {
   const quillRef = useRef(null)
@@ -11,6 +10,31 @@ const EditorForm = () => {
   const [imagePreview, setImagePreview] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
+  const [userName, setUserName] = useState("")
+
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const authToken = localStorage.getItem("token");
+      if (!authToken) return;
+
+      try {
+        const resAuthVerify = await fetch("http://localhost:3000/auth/profile", {
+          headers: { Authorization: `Bearer ${authToken} ` }
+        });
+
+        if (!resAuthVerify.ok) { console.error("Error al obtener el perfil") };
+
+        const data = await resAuthVerify.json();
+        setUserName(data?.user?.user || "");
+      } catch (error) {
+        console.log("Error en la solicitud del perfil: ", error)
+      };
+    };
+
+    fetchUserProfile();
+  }, []);
+
 
   const handleImageSelect = (file) => {
     if (file && file.type.startsWith("image/")) {
@@ -65,6 +89,7 @@ const EditorForm = () => {
       const formData = new FormData()
       formData.append("title", title)
       formData.append("content", content)
+      formData.append("autor", userName)
 
       if (selectedImage) {
         formData.append("image", selectedImage)
@@ -78,7 +103,6 @@ const EditorForm = () => {
 
         if (response.ok) {
           console.log("Enviado correctamente")
-          // Reset form
           document.querySelector("#titulo").value = ""
           if (quillRef.current) {
             quillRef.current.setContent("")

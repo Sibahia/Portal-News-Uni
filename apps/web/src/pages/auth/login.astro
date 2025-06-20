@@ -32,12 +32,8 @@ import LogoBadge from "../../components/badge/Logo.astro";
 </Layout>
 
 <script>
-    const container = document.querySelector(".login")
-    const buttons = container.querySelector("button");
-
-    buttons.addEventListener("submit", sendLogin)
     
-    // document.getElementById("loginForm").addEventListener("submit", sendLogin)
+    document.getElementById("loginForm").addEventListener("submit", sendLogin)
 
     function sendLogin (event) {
         event.preventDefault();
@@ -57,7 +53,7 @@ import LogoBadge from "../../components/badge/Logo.astro";
             if (!data.token) { console.log("Error al registrar usuario: ", data.message) }
 
             localStorage.setItem("token", data.token);
-            window.location.replace = "/auth/profile;"
+            window.location.replace("/auth/profile");
         })
         .catch(err => {
             console.log(err)

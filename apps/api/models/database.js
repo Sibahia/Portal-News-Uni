@@ -86,6 +86,18 @@ class sqlORM {
         });
     };
 
+    findAllJoin(params) {
+        return new Promise((resolve, reject) => {
+            this.db.all(params, (error, rows) => {
+                if (error) {
+                    reject({ message: 'Error ejecutando la consulta JOIN', error: error.message })
+                } else {
+                    resolve(rows);
+                };
+            });
+        });
+    };
+
     getAll(tableName) {
         const sql = `SELECT * FROM ${tableName}`;
 

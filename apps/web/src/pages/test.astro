@@ -31,7 +31,6 @@ import TrendingSection from '../components/notices/TrendingSection.astro';
 <script>
   import { fetchNews, renderNews, showError, hideLoading } from '../scripts/newsUtils.js';
 
-  // Función principal de inicialización
   async function initializeApp() {
     try {
       const articles = await fetchNews();

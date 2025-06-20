@@ -9,7 +9,7 @@ export const mockNewsData = [
     title: "Avances revolucionarios en inteligencia artificial transforman la industria tecnológica",
     content:
       "Las últimas innovaciones en IA están redefiniendo cómo las empresas abordan los desafíos tecnológicos, prometiendo cambios significativos en múltiples sectores industriales. Los algoritmos de aprendizaje automático están revolucionando desde la medicina hasta las finanzas.",
-    image: "/images/ai-technology.jpg",
+    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
     time_created: "2024-01-15T10:30:00Z",
     category: "Tecnología",
     views: "12.5K",
@@ -22,7 +22,7 @@ export const mockNewsData = [
     title: "Mundial de Fútbol: Resultados sorprendentes en los cuartos de final",
     content:
       "Los equipos favoritos enfrentan desafíos inesperados en esta fase crucial del torneo. Las sorpresas no han dejado de aparecer en esta edición del mundial.",
-    image: "/images/football-stadium.jpg",
+    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
     time_created: "2024-01-15T06:45:00Z",
     category: "Deportes",
     views: "8.2K",
@@ -35,7 +35,7 @@ export const mockNewsData = [
     title: "Nueva propuesta legislativa genera debate en el congreso",
     content:
       "La propuesta ha dividido opiniones entre los legisladores, generando intensos debates sobre su implementación y posibles consecuencias.",
-    image: "/images/government-building.jpg",
+    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
     time_created: "2024-01-15T04:20:00Z",
     category: "Política",
     views: "5.7K",
@@ -48,7 +48,7 @@ export const mockNewsData = [
     title: "Festival Internacional de Cine anuncia su programación completa",
     content:
       "Más de 200 películas de 50 países diferentes se presentarán en esta edición que promete ser histórica. Directores reconocidos mundialmente participarán.",
-    image: "/images/cinema-festival.jpg",
+    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
     time_created: "2024-01-14T20:15:00Z",
     category: "Cultura",
     views: "3.4K",
@@ -61,66 +61,34 @@ export const mockNewsData = [
     title: "Mercados financieros muestran tendencia alcista",
     content:
       "Los principales índices bursátiles registran ganancias significativas impulsados por resultados corporativos positivos.",
-    image: "/images/stock-market.jpg",
+    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
     time_created: "2024-01-14T16:30:00Z",
     category: "Economía",
     views: "6.8K",
     likes: "145",
     comments: "28",
-  },
-  {
-    id: "6",
-    autor: "Dra. Elena Vega",
-    title: "Descubrimiento científico podría revolucionar la medicina moderna",
-    content:
-      "Investigadores logran un avance significativo que podría cambiar el tratamiento de enfermedades crónicas y mejorar la calidad de vida de millones.",
-    image: "/images/medical-research.jpg",
-    time_created: "2024-01-13T14:45:00Z",
-    category: "Ciencia",
-    views: "9.1K",
-    likes: "456",
-    comments: "78",
-  },
-  {
-    id: "7",
-    autor: "Tech News",
-    title: "Nueva actualización de seguridad protege millones de dispositivos",
-    content:
-      "La actualización incluye parches críticos que protegen contra las últimas amenazas cibernéticas identificadas.",
-    image: "/images/cybersecurity.jpg",
-    time_created: "2024-01-12T11:20:00Z",
-    category: "Tecnología",
-    views: "4.2K",
-    likes: "98",
-    comments: "15",
-  },
-  {
-    id: "8",
-    autor: "Social Impact",
-    title: "Iniciativa comunitaria transforma barrios urbanos",
-    content:
-      "El proyecto ha logrado revitalizar espacios públicos y crear oportunidades de empleo para residentes locales.",
-    image: "/images/community-garden.jpg",
-    time_created: "2024-01-11T09:10:00Z",
-    category: "Sociedad",
-    views: "2.8K",
-    likes: "167",
-    comments: "34",
-  },
-  {
-    id: "9",
-    autor: "Edu Today",
-    title: "Programa educativo digital alcanza récord de participación",
-    content:
-      "La plataforma ha registrado más de un millón de estudiantes activos, superando todas las expectativas iniciales.",
-    image: "/images/online-education.jpg",
-    time_created: "2024-01-10T15:30:00Z",
-    category: "Educación",
-    views: "7.5K",
-    likes: "289",
-    comments: "56",
-  },
+  }
 ]
+
+function getImageUrl(image) {
+  if (!image || (Array.isArray(image) && image.length === 0)) {
+    return "/placeholder.jpg"; // o la ruta a una imagen por defecto
+  }
+
+  // Si es array, tomar la primera imagen
+  const imagePath = Array.isArray(image) ? image[0] : image;
+
+  // Validar que imagePath sea string antes de usar startsWith
+  if (typeof imagePath !== "string") {
+    return "/placeholder.jpg";
+  }
+
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+
+  return `${API_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+}
 
 // Utilidades
 export function formatTimeAgo(dateString) {
@@ -179,11 +147,12 @@ export function truncateText(text, maxLength) {
 export function createMainArticleHTML(article) {
   const categoryClass = getCategoryClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
+  const imageUrl = getImageUrl(article.image)
 
   return `
         <a href="/article/${article.id}" class="md:col-span-2 lg:col-span-3 md:row-span-2 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div class="relative h-full min-h-[300px] md:min-h-[400px]">
-                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <span class="inline-block px-3 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full mb-3">${article.category}</span>
@@ -210,12 +179,13 @@ export function createSecondaryArticleHTML(article, size = "large") {
   const categoryClass = getCategoryClass(article.category)
   const hoverClass = getCategoryHoverClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
+  const imageUrl = getImageUrl(article.image)
 
   if (size === "small") {
     return `
             <a href="/article/${article.id}" class="md:col-span-2 lg:col-span-1 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                 <div class="relative h-32">
-                    <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                    <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                     <span class="absolute top-2 left-2 px-2 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full">${article.category}</span>
                 </div>
                 <div class="p-3">
@@ -233,7 +203,7 @@ export function createSecondaryArticleHTML(article, size = "large") {
   return `
         <a href="/article/${article.id}" class="md:col-span-2 lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div class="relative h-48">
-                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 <span class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full">${article.category}</span>
             </div>
             <div class="p-4">
@@ -254,12 +224,13 @@ export function createHorizontalArticleHTML(article) {
   const categoryClass = getCategoryClass(article.category)
   const hoverClass = getCategoryHoverClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
+  const imageUrl = getImageUrl(article.image)
 
   return `
         <a href="/article/${article.id}" class="md:col-span-4 lg:col-span-3 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div class="flex flex-col md:flex-row h-auto md:h-32">
                 <div class="relative w-full md:w-48 h-32 md:h-full flex-shrink-0">
-                    <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                    <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1 p-4 flex flex-col justify-between">
                     <div>
@@ -285,11 +256,12 @@ export function createSmallArticlesHTML(articles) {
       const categoryClass = getCategoryClass(article.category)
       const hoverClass = getCategoryHoverClass(article.category)
       const timeAgo = formatTimeAgo(article.time_created)
+      const imageUrl = getImageUrl(article.image)
 
       return `
             <a href="/article/${article.id}" class="bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                 <div class="relative h-24">
-                    <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                    <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-4">
                     <span class="inline-block px-2 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full mb-2">${article.category}</span>
