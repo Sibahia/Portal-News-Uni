@@ -30,6 +30,28 @@ router.get('/', (req, res) => {
     .catch(error => res.status(400).json(error.message))
 });
 
+router.get('/filters', (req, res) => {
+        const limit = parseInt(req.query.limit) || 8;
+
+        dbSQL.findLimit('notices', limit)
+        .then(news => {
+            notices = news;
+            return dbSQL.findLimit('images', limit)
+        })
+        .then(images => {
+            const combined = notices.map(notice => {
+                const noticeImages = images.filter(img => img.notice_id === notice.id).map(img => img.image_path)
+
+                return {
+                    ...notice,
+                    image: noticeImages
+                };
+            });
+            res.status(200).json({ notices: combined })
+        })
+        .catch(error => res.status(400).json(error.message))
+});
+
 router.post('/', upload.single('image'), (req, res) => {
     const { title, autor, content } = req.body;
     const imageFile = req.file;

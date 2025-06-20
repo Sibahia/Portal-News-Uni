@@ -7,7 +7,7 @@ class sqlORM {
                  console.log('Error de conexión: ', error.message ) 
                 } else {
                     this.db.run('PRAGMA foreign_keys = ON', (err) => {
-                        if (err) { console.log('Error activando claves foráneas: ', err.message)}
+                        if (err) { console.log({ error: 'Error activando claves foráneas', details: err.message })}
                     });
                 };
         });
@@ -25,7 +25,7 @@ class sqlORM {
         const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (${columns}${foreignKeysSQL})`;
 
         this.db.run(sql, (error) => {
-            if (error) { console.log('Error definiendo tabla: ', error.message)}
+            if (error) { console.log({ error: 'definiendo tablas', details: error.message })}
         });
     };
 
@@ -39,7 +39,7 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.run(sql, values, function (err) {
                 if (err) {
-                    reject({ message: 'error insertando datos: ', error: err.message})
+                    reject({ error: 'error insertando datos: ', details: err.message})
                 } else {
                     resolve(this.lastID);
                 };
@@ -62,7 +62,7 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.run(sql, values, function (error) {
                 if (error) {
-                    reject({ message: 'Error actualizando datos: ', error: error.message });
+                    reject({ error: 'Error actualizando datos: ', details: error.message });
                 } else {
                     resolve({ message: 'Datos actualizados correctamente', changes: this.changes });
                 };
@@ -80,9 +80,9 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.get(sql, values, (error, row) => {
                 if (error) {
-                    reject('Error obteniendo los datos: ' + error.message);
+                    reject({ error: 'Error obteniendo los datos', details: error.message });
                 } else if (!row) {
-                    reject('No existen los datos');
+                    reject({ error: 'No existen los datos' });
                 } else {
                     resolve(row);
                 }
@@ -99,7 +99,21 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.all(sql, (error, rows) => {
                 if (error) {
-                    reject('Error obteniendo los datos limitado: ' + error.message);
+                    reject({ error: 'Error obteniendo los datos limitado', details: error.message });
+                } else {
+                    resolve(rows);
+                };
+            });
+        });
+    };
+
+    findLimit(tableName, limit) {
+        const sql = `SELECT * FROM ${tableName} LIMIT ?`;
+
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, [limit], (error, rows) => {
+                if (error) {
+                    reject({ error: 'Error obteniendo datos con límites', details: error.message })
                 } else {
                     resolve(rows);
                 };
@@ -111,7 +125,7 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.all(params, (error, rows) => {
                 if (error) {
-                    reject({ message: 'Error ejecutando la consulta JOIN', error: error.message })
+                    reject({ error: 'Error ejecutando la consulta JOIN', details: error.message })
                 } else {
                     resolve(rows);
                 };
@@ -125,7 +139,7 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.all(sql, (error, rows) => {
                 if (error) {
-                    reject('Error obteniendo todos los datos: ' + error.message);
+                    reject({ error: 'Error obteniendo todos los datos', details: error.message });
                 } else {
                     resolve(rows);
                 };
@@ -142,7 +156,7 @@ class sqlORM {
         return new Promise((resolve, reject) => {
             this.db.run(sql, values, function (error) {
                 if (error) {
-                    reject('Error eliminando datos: ' + error.message);
+                    reject({ error: 'Error eliminando datos', details: error.message });
                 } else {
                     resolve({ message: 'Datos eliminados correctamente', changes: this.changes });
                 }

@@ -116,7 +116,7 @@ export function createSecondaryArticleHTML(article, size = "large") {
             </div>
             <div class="p-4">
                 <h3 class="font-bold text-lg mb-2 line-clamp-2 transition-colors duration-300">${article.title}</h3>
-                <p class="text-gray-600 text-sm mb-3 line-clamp-2">${truncateText(article.content, 100)}</p>
+                <p class="text-gray-600 text-sm mb-3 line-clamp-2">${truncateText(article.content, 292)}</p>
                 <div class="flex items-center space-x-3 text-xs text-gray-500">
                     <span>${article.autor}</span>
                     <span>•</span>
@@ -168,7 +168,7 @@ export function createSmallArticlesHTML(articles) {
                     <h4 class="font-semibold text-sm mb-2 line-clamp-3 transition-colors duration-300">${article.title}</h4>
                     <div class="flex items-center space-x-2 text-xs text-gray-500">
                         <span>${article.autor}</span>
-                        <p class="text-gray-600 text-sm line-clamp-2">${truncateText(article.content, 60)}</p>
+                        <p class="text-gray-600 text-sm line-clamp-2">${truncateText(article.content, 20)}</p>
                         <span>•</span>
                         <span>${timeAgo}</span>
                     </div>
