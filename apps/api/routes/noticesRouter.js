@@ -62,5 +62,25 @@ router.post('/', upload.single('image'), (req, res) => {
     });
 });
 
+router.post('/:id/image', upload.single('image'), (req, res) => {
+    const noticeId = req.params.id;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!imagePath) {
+        return res.status(400).json({ message: 'No se ha proporcionado ninguna imagen.' });
+    }
+
+    dbSQL.insert('images', {
+        notice_id: noticeId,
+        image_path: imagePath
+    })
+    .then(() => {
+        res.status(201).json({ message: 'Imagen añadida correctamente a la noticia.' });
+    })
+    .catch(error => {
+        res.status(500).json({ message: 'Error al guardar la imagen', error });
+    });
+});
+
 
 module.exports = router;

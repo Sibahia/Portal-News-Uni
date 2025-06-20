@@ -1,5 +1,4 @@
 ---
-// Fetch data from API
 let notices = [];
 try {
   const response = await fetch('http://localhost:3000/api/notices');
@@ -9,7 +8,6 @@ try {
   console.error('Error fetching notices:', error);
 }
 
-// Helper function to format date
 function formatDate(dateString) {
   if (!dateString) return 'Sin fecha';
   const date = new Date(dateString);
@@ -22,13 +20,11 @@ function formatDate(dateString) {
   });
 }
 
-// Helper function to truncate content
 function truncateText(text, maxLength = 100) {
   if (!text) return 'Sin contenido';
   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
-// Helper function to format full date with more details
 function formatFullDate(dateString) {
   if (!dateString) return 'Fecha no disponible';
   const date = new Date(dateString);
@@ -45,7 +41,6 @@ function formatFullDate(dateString) {
 ---
 
 <div class="w-full max-w-7xl mx-auto p-6 bg-white">
-  <!-- Header Section -->
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-2">Avisos y Noticias</h1>
     <p class="text-gray-600">Últimas actualizaciones y comunicados</p>
@@ -59,9 +54,7 @@ function formatFullDate(dateString) {
     </div>
   </div>
 
-  <!-- Table Container -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-    <!-- Desktop Table -->
     <div class="hidden md:block overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">

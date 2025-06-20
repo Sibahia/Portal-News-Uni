@@ -1,0 +1,86 @@
+---
+import Layout from "../../layouts/Layout2.astro";
+const { id } = Astro.params;
+
+const getNoticeById = async function(id) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/notices/article/${id}`);
+    if (!response.ok) throw new Error("No se pudo cargar la noticia");
+    const data = await response.json();
+    return data.notice;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+const article = await getNoticeById(id);
+---
+<Layout title={article ? article.title : "Noticia"}>
+  <main class="py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {article ? (
+        <>
+          <div class="relative">
+            <img src={article.image?.startsWith("http") ? article.image : `${article.image}`} alt={article.title} class="w-full h-64 md:h-96 object-cover" loading="lazy" />
+          </div>
+
+          <div class="p-6 md:p-12">
+            <div class="text-center mb-8">
+              <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">{article.title}</h1>
+              <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 text-gray-600">
+                <div class="flex items-center space-x-3">
+                  <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span id="avatar" class="text-sm font-medium text-white"></span>
+                  </div>
+                  <div class="text-left">
+                    <div class="flex items-center space-x-1">
+                      <i class="fas fa-user w-4 h-4"></i>
+                      <span class="font-medium text-gray-900">{article.autor}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hidden sm:block w-px h-6 bg-gray-300"></div>
+
+                <div class="flex items-center space-x-4 text-sm">
+                  <div class="flex items-center space-x-1">
+                    <i class="fas fa-calendar w-4 h-4"></i>
+                    <span>{new Date(article.time_created).toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-gray-200 mb-8"></div>
+
+            <div class="max-w-none text-gray-800 leading-relaxed text-lg" set:html={article.content}></div>
+          </div>
+        </>
+      ) : (
+        <p class="text-center text-red-500 font-medium">No se pudo cargar la noticia.</p>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const token = localStorage.getItem("token");
+
+  fetch("http://localhost:3000/auth/profile", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(res => {
+      if (!res.ok) {
+        window.location.href = "/error";
+        throw new Error("Error al obtener perfil");
+      }
+      return res.json();
+    })
+    .then(data => {
+      document.getElementById("avatar").textContent = data.user.user ? data.user.user.charAt(0) : '?';
+    })
+    .catch(error => {
+      console.error("Error:", error.message);
+    });
+</script>

@@ -10,7 +10,7 @@ import "../styles/global.css";
 		<meta name="viewport" content="width=device-width initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Portal Noticias</title>
+		<title>Portal Noticias - Menu</title>
 	</head>
 	<body class="bg-gris-claro">
 		<div class="flex h-screen">
@@ -30,7 +30,10 @@ import "../styles/global.css";
 
             <header class="p-4 shadow flex justify-between items-center">
                 <h1 class="text-second-light-v2 text-2xl font-overpass font-bold">Dashboard</h1>
-                <p id="user" class="text-second-light-v2 text-lg font-dm"></p>
+                
+                <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span id="avatar" class="text-sm font-medium text-white"></span>
+                </div>
                 <!-- <button class="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700">Cerrar sesión</button> -->
             </header>
 
@@ -66,7 +69,7 @@ import "../styles/global.css";
         return res.json();
     })
     .then(data => {
-        document.getElementById("user").textContent = data.user.user;
+        document.getElementById("avatar").textContent = data.user.user ? data.user.user.charAt(0) : '?';
     })
     .catch(error => { console.error("Error:", error.message); });
 </script>

@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const noticesRouter = require('./routes/noticesRouter.js');
+const articleRouter = require('./routes/article.js');
 const registerRouter = require('./routes/registerRouter.js');
 const authRouter = require('./routes/authRouter.js');
 const loginRouter = require('./routes/login.js');
@@ -25,6 +26,7 @@ app.listen(PORT, () => {
 });
 
 app.use('/api/notices', noticesRouter);
+app.use('/api/notices/article', articleRouter)
 app.use('/auth/register', registerRouter);
 app.use('/auth/login', loginRouter)
 app.use('/auth', authRouter);
