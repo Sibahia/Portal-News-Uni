@@ -1,84 +1,13 @@
-// Configuración de la API
 const API_BASE_URL = "http://localhost:3000"
 
-// Datos mock para desarrollo
-export const mockNewsData = [
-  {
-    id: "1",
-    autor: "María González",
-    title: "Avances revolucionarios en inteligencia artificial transforman la industria tecnológica",
-    content:
-      "Las últimas innovaciones en IA están redefiniendo cómo las empresas abordan los desafíos tecnológicos, prometiendo cambios significativos en múltiples sectores industriales. Los algoritmos de aprendizaje automático están revolucionando desde la medicina hasta las finanzas.",
-    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
-    time_created: "2024-01-15T10:30:00Z",
-    category: "Tecnología",
-    views: "12.5K",
-    likes: "324",
-    comments: "89",
-  },
-  {
-    id: "2",
-    autor: "Carlos Ruiz",
-    title: "Mundial de Fútbol: Resultados sorprendentes en los cuartos de final",
-    content:
-      "Los equipos favoritos enfrentan desafíos inesperados en esta fase crucial del torneo. Las sorpresas no han dejado de aparecer en esta edición del mundial.",
-    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
-    time_created: "2024-01-15T06:45:00Z",
-    category: "Deportes",
-    views: "8.2K",
-    likes: "156",
-    comments: "43",
-  },
-  {
-    id: "3",
-    autor: "Ana López",
-    title: "Nueva propuesta legislativa genera debate en el congreso",
-    content:
-      "La propuesta ha dividido opiniones entre los legisladores, generando intensos debates sobre su implementación y posibles consecuencias.",
-    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
-    time_created: "2024-01-15T04:20:00Z",
-    category: "Política",
-    views: "5.7K",
-    likes: "89",
-    comments: "67",
-  },
-  {
-    id: "4",
-    autor: "Roberto Silva",
-    title: "Festival Internacional de Cine anuncia su programación completa",
-    content:
-      "Más de 200 películas de 50 países diferentes se presentarán en esta edición que promete ser histórica. Directores reconocidos mundialmente participarán.",
-    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
-    time_created: "2024-01-14T20:15:00Z",
-    category: "Cultura",
-    views: "3.4K",
-    likes: "234",
-    comments: "12",
-  },
-  {
-    id: "5",
-    autor: "Luis Martín",
-    title: "Mercados financieros muestran tendencia alcista",
-    content:
-      "Los principales índices bursátiles registran ganancias significativas impulsados por resultados corporativos positivos.",
-    image: "https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/0c25/live/6f1543a0-3719-11f0-96c3-cf669419a2b0.jpg",
-    time_created: "2024-01-14T16:30:00Z",
-    category: "Economía",
-    views: "6.8K",
-    likes: "145",
-    comments: "28",
-  }
-]
 
 function getImageUrl(image) {
   if (!image || (Array.isArray(image) && image.length === 0)) {
-    return "/placeholder.jpg"; // o la ruta a una imagen por defecto
+    return "/placeholder.jpg"; 
   }
 
-  // Si es array, tomar la primera imagen
   const imagePath = Array.isArray(image) ? image[0] : image;
 
-  // Validar que imagePath sea string antes de usar startsWith
   if (typeof imagePath !== "string") {
     return "/placeholder.jpg";
   }
@@ -90,7 +19,6 @@ function getImageUrl(image) {
   return `${API_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 }
 
-// Utilidades
 export function formatTimeAgo(dateString) {
   const date = new Date(dateString)
   const now = new Date()
@@ -124,28 +52,13 @@ export function getCategoryClass(category) {
   return categoryMap[category] || "bg-gray-600"
 }
 
-export function getCategoryHoverClass(category) {
-  const categoryMap = {
-    Tecnología: "group-hover:text-red-600",
-    Deportes: "group-hover:text-green-600",
-    Política: "group-hover:text-blue-600",
-    Cultura: "group-hover:text-purple-600",
-    Economía: "group-hover:text-yellow-600",
-    Ciencia: "group-hover:text-teal-600",
-    Sociedad: "group-hover:text-pink-600",
-    Educación: "group-hover:text-indigo-600",
-  }
-  return categoryMap[category] || "group-hover:text-gray-600"
-}
 
 export function truncateText(text, maxLength) {
   if (text.length <= maxLength) return text
   return text.substr(0, maxLength) + "..."
 }
 
-// Función para crear el HTML de una noticia principal
 export function createMainArticleHTML(article) {
-  const categoryClass = getCategoryClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
   const imageUrl = getImageUrl(article.image)
 
@@ -155,7 +68,6 @@ export function createMainArticleHTML(article) {
                 <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <span class="inline-block px-3 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full mb-3">${article.category}</span>
                     <h2 class="text-2xl md:text-3xl font-bold mb-3 leading-tight">${article.title}</h2>
                     <p class="text-gray-200 mb-4 line-clamp-3">${truncateText(article.content, 150)}</p>
                     <div class="flex items-center space-x-4 text-sm text-gray-300">
@@ -174,10 +86,7 @@ export function createMainArticleHTML(article) {
     `
 }
 
-// Función para crear el HTML de una noticia secundaria
 export function createSecondaryArticleHTML(article, size = "large") {
-  const categoryClass = getCategoryClass(article.category)
-  const hoverClass = getCategoryHoverClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
   const imageUrl = getImageUrl(article.image)
 
@@ -186,10 +95,9 @@ export function createSecondaryArticleHTML(article, size = "large") {
             <a href="/article/${article.id}" class="md:col-span-2 lg:col-span-1 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                 <div class="relative h-32">
                     <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 px-2 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full">${article.category}</span>
                 </div>
                 <div class="p-3">
-                    <h3 class="font-bold text-sm mb-2 line-clamp-3 transition-colors duration-300 ${hoverClass}">${article.title}</h3>
+                    <h3 class="font-bold text-sm mb-2 line-clamp-3 transition-colors duration-300">${article.title}</h3>
                     <div class="flex items-center space-x-2 text-xs text-gray-500">
                         <span>${article.autor}</span>
                         <span>•</span>
@@ -204,10 +112,9 @@ export function createSecondaryArticleHTML(article, size = "large") {
         <a href="/article/${article.id}" class="md:col-span-2 lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden group cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div class="relative h-48">
                 <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
-                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full">${article.category}</span>
             </div>
             <div class="p-4">
-                <h3 class="font-bold text-lg mb-2 line-clamp-2 transition-colors duration-300 ${hoverClass}">${article.title}</h3>
+                <h3 class="font-bold text-lg mb-2 line-clamp-2 transition-colors duration-300">${article.title}</h3>
                 <p class="text-gray-600 text-sm mb-3 line-clamp-2">${truncateText(article.content, 100)}</p>
                 <div class="flex items-center space-x-3 text-xs text-gray-500">
                     <span>${article.autor}</span>
@@ -219,10 +126,7 @@ export function createSecondaryArticleHTML(article, size = "large") {
     `
 }
 
-// Función para crear el HTML de una noticia horizontal
 export function createHorizontalArticleHTML(article) {
-  const categoryClass = getCategoryClass(article.category)
-  const hoverClass = getCategoryHoverClass(article.category)
   const timeAgo = formatTimeAgo(article.time_created)
   const imageUrl = getImageUrl(article.image)
 
@@ -234,8 +138,7 @@ export function createHorizontalArticleHTML(article) {
                 </div>
                 <div class="flex-1 p-4 flex flex-col justify-between">
                     <div>
-                        <span class="inline-block px-3 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full mb-2">${article.category}</span>
-                        <h3 class="font-bold text-lg mb-2 line-clamp-2 transition-colors duration-300 ${hoverClass}">${article.title}</h3>
+                        <h3 class="font-bold text-lg mb-2 line-clamp-2 transition-colors duration-300">${article.title}</h3>
                         <p class="text-gray-600 text-sm line-clamp-2">${truncateText(article.content, 120)}</p>
                     </div>
                     <div class="flex items-center space-x-3 text-xs text-gray-500 mt-2">
@@ -249,12 +152,9 @@ export function createHorizontalArticleHTML(article) {
     `
 }
 
-// Función para crear el HTML de noticias pequeñas
 export function createSmallArticlesHTML(articles) {
   const articlesHTML = articles
     .map((article) => {
-      const categoryClass = getCategoryClass(article.category)
-      const hoverClass = getCategoryHoverClass(article.category)
       const timeAgo = formatTimeAgo(article.time_created)
       const imageUrl = getImageUrl(article.image)
 
@@ -264,8 +164,7 @@ export function createSmallArticlesHTML(articles) {
                     <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-4">
-                    <span class="inline-block px-2 py-1 text-xs font-semibold ${categoryClass} text-white rounded-full mb-2">${article.category}</span>
-                    <h4 class="font-semibold text-sm mb-2 line-clamp-3 transition-colors duration-300 ${hoverClass}">${article.title}</h4>
+                    <h4 class="font-semibold text-sm mb-2 line-clamp-3 transition-colors duration-300">${article.title}</h4>
                     <div class="flex items-center space-x-2 text-xs text-gray-500">
                         <span>${article.autor}</span>
                         <span>•</span>
@@ -284,7 +183,6 @@ export function createSmallArticlesHTML(articles) {
     `
 }
 
-// Función principal para renderizar las noticias
 export function renderNews(articles) {
   const newsGrid = document.getElementById("news-grid")
 
@@ -293,14 +191,12 @@ export function renderNews(articles) {
     return
   }
 
-  // Separar artículos por posición en el grid
   const mainArticle = articles[0]
   const secondaryArticles = articles.slice(1, 6)
   const smallArticles = articles.slice(6, 9)
 
   let gridHTML = ""
 
-  // Artículo principal
   if (mainArticle) {
     gridHTML += createMainArticleHTML(mainArticle)
   }
@@ -318,7 +214,6 @@ export function renderNews(articles) {
     }
   })
 
-  // Noticias pequeñas
   if (smallArticles.length > 0) {
     gridHTML += createSmallArticlesHTML(smallArticles)
   }
@@ -326,22 +221,18 @@ export function renderNews(articles) {
   newsGrid.innerHTML = gridHTML
 }
 
-// Función para mostrar error
 export function showError() {
   document.getElementById("error-message")?.classList.remove("hidden")
   const newsGrid = document.getElementById("news-grid")
   if (newsGrid) newsGrid.style.display = "none"
 }
 
-// Función para ocultar loading
 export function hideLoading() {
   document.getElementById("loading-screen")?.classList.add("hidden")
 }
 
-// Función para obtener noticias (con fallback a datos mock)
 export async function fetchNews() {
   try {
-    // Intentar obtener datos de la API
     const response = await fetch(`${API_BASE_URL}/api/notices`)
 
     if (!response.ok) {
@@ -349,11 +240,9 @@ export async function fetchNews() {
     }
 
     const result = await response.json()
-    return result.notices || mockNewsData
+    return result.notices
   } catch (error) {
-    console.log("Usando datos mock:", error.message)
-    // Simular delay de red
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    return mockNewsData
+
+    await new Promise((resolve) => setTimeout(resolve, 25000))
   }
 }
