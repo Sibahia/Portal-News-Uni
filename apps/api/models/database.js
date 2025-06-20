@@ -45,10 +45,31 @@ class sqlORM {
                 };
             });
         })
-        // this.db.run(sql, values, (error) => {
-        //     if (error) { console.log('Error insertando datos: ', error.message)}
-        // });
     };
+
+    update(tableName, params, whereParams) {
+        const columns = Object.keys(params)
+            .map(key => `${key} = ?`)
+            .join(', ');
+        const whereClause = Object.keys(whereParams)
+            .map(key => `${key} = ?`)
+            .join(' AND ');
+
+        const values = [...Object.values(params), ...Object.values(whereParams)];
+
+        const sql = `UPDATE ${tableName} SET ${columns} WHERE ${whereClause}`;
+
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, values, function (error) {
+                if (error) {
+                    reject({ message: 'Error actualizando datos: ', error: error.message });
+                } else {
+                    resolve({ message: 'Datos actualizados correctamente', changes: this.changes });
+                };
+            });
+        });
+    };
+
 
     find(tableName, params) {
         const columns = Object.keys(params).map(key => `${key} = ?`).join(' AND ');

@@ -1,8 +1,8 @@
 ---
-import Layout from "../../layouts/Layout2.astro"
+import Dashboard from "../../layouts/dashboard.astro";
 ---
 
-<Layout title="Menu - Subir IMG">
+<Dashboard title="Subir IMG">
     <form id="upload-image-form" class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md space-y-6" enctype="multipart/form-data">
         <h2 class="text-2xl font-bold text-gray-800 text-center">Subir imagen a una noticia</h2>
 
@@ -42,7 +42,7 @@ import Layout from "../../layouts/Layout2.astro"
 
         <p id="status-message" class="text-center text-sm text-gray-600"></p>
     </form>
-</Layout>
+</Dashboard>
 
 <script>
   const form = document.getElementById('upload-image-form');

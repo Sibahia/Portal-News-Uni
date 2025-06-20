@@ -1,7 +1,12 @@
 ---
+export interface Props {
+  title: string;
+}
+
 import Nombre from "../components/badge/Nombre.astro"
-import Layout from "../layouts/Layout.astro"
 import "../styles/global.css";
+
+const { title } = Astro.props;
 ---
 <!doctype html>
 <html lang="es">
@@ -10,7 +15,7 @@ import "../styles/global.css";
 		<meta name="viewport" content="width=device-width initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Portal Noticias - Menu</title>
+		<title>Menu - {title}</title>
 	</head>
 	<body class="bg-gris-claro">
 		<div class="flex h-screen">
@@ -30,7 +35,7 @@ import "../styles/global.css";
 
             <header class="p-4 shadow flex justify-between items-center">
                 <h1 class="text-second-light-v2 text-2xl font-overpass font-bold">Dashboard</h1>
-                
+
                 <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
                     <span id="avatar" class="text-sm font-medium text-white"></span>
                 </div>
