@@ -201,7 +201,6 @@ export function renderNews(articles) {
     gridHTML += createMainArticleHTML(mainArticle)
   }
 
-  // Artículos secundarios con diferentes layouts
   secondaryArticles.forEach((article, index) => {
     if (index === 0) {
       gridHTML += createSecondaryArticleHTML(article, "large")
