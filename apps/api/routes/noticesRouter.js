@@ -53,7 +53,7 @@ router.post('/', upload.single('image'), (req, res) => {
         res.status(201).json({ message: 'Noticia e imagen guardadas correctamente' });
     }).catch(error => {
 
-        if (imageFile ?? imageFile.path) {
+        if (imageFile && imageFile.path) {
             fs.unlink(imageFile.path, (error) => {
                 if (error) { console.log('Error al eliminar imagen tras fallo:', err.message)}
             });
