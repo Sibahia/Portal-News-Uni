@@ -234,7 +234,7 @@ export function hideLoading() {
 
 export async function fetchNews() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/notices`)
+    const response = await fetch(`${API_BASE_URL}/api/notices/filters?limit=7`)
 
     if (!response.ok) {
       throw new Error("API no disponible")
