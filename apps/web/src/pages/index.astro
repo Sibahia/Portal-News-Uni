@@ -1,6 +1,110 @@
 ---
 import Layout from '../layouts/Layout2.astro';
 import NewsGrid from '../components/notices/NewsGrid.astro';
+
+async function fetchNewsFromAPI() {
+  try {
+    const response = await fetch('http://localhost:3000/api/notices/filters?limit=9');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (result.success && result.notices) {
+      return result.notices;
+    } else if (result.notices) {
+      return result.notices;
+    } else {
+      throw new Error('Invalid API response structure');
+    }
+  } catch (error) {
+    console.error('Error fetching news from API:', error);
+    throw error;
+  }
+}
+
+let newsArticles = [];
+let apiError = null;
+
+try {
+  newsArticles = await fetchNewsFromAPI();
+  console.log('News loaded from API successfully');
+} catch (error) {
+  console.error('Failed to load news from API:', error.message);
+  apiError = error.message;
+}
+---
+
+<Layout title="Portal de Noticias">
+  <main class="py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {apiError && (
+        <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+            <span class="text-sm text-red-800">
+              Error al cargar noticias: {apiError}
+            </span>
+          </div>
+        </div>
+      )}
+
+      <div id="error-message" class="hidden text-center py-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Error al cargar las noticias</h2>
+        <p class="text-gray-600 mb-6">Por favor, intenta recargar la página.</p>
+        <button onclick="location.reload()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300">
+          Reintentar
+        </button>
+      </div>
+
+      <div id="loading-screen" class="text-center py-16">
+        <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-gray-600">Cargando noticias...</p>
+      </div>
+
+      <NewsGrid />
+    </div>
+  </main>
+
+  <!-- Pasar datos al cliente -->
+  <script define:vars={{ newsArticles, apiError }}>
+    window.newsArticles = newsArticles;
+    window.apiError = apiError;
+  </script>
+</Layout>
+
+<script>
+  import { renderNews, showError, hideLoading } from '../scripts/newsUtils.js';
+
+  async function initializeApp() {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const articles = window.newsArticles;
+      
+      if (!articles || articles.length === 0) {
+        throw new Error('No hay artículos disponibles');
+      }
+      
+      renderNews(articles);
+      console.log('Noticias cargadas exitosamente desde la API');
+    } catch (error) {
+      console.error('Error al cargar noticias:', error);
+      showError();
+    } finally {
+      hideLoading();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeApp);
+
+</script>
+
+<!-- ---
+import Layout from '../layouts/Layout2.astro';
+import NewsGrid from '../components/notices/NewsGrid.astro';
 ---
 
 <Layout title="Portal de Noticias">
@@ -41,4 +145,4 @@ import NewsGrid from '../components/notices/NewsGrid.astro';
 
   document.addEventListener('DOMContentLoaded', initializeApp);
 
-</script>
+</script> -->

@@ -14,15 +14,12 @@ const QuillEditor = forwardRef((props, ref) => {
         theme: "snow",
         modules: {
           toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
             ['bold', 'italic', 'underline', 'strike'],
             ['link', 'image'],
             [{ 'size': ['small', false, 'large', 'huge'] }],
             [{ 'direction': 'rlt' }],
             [{ 'color': [] }, {'background': []}],
-            [{ 'font': [] }],
-            [{ 'align': [] }]
             ],
         },
       });

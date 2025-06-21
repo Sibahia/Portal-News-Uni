@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const path = require('path');
 
 const { sqlORM } = require('../models/database.js');
 const upload = require('../middleware/multer.js');
@@ -76,8 +75,12 @@ router.post('/', upload.single('image'), (req, res) => {
     }).catch(error => {
 
         if (imageFile && imageFile.path) {
-            fs.unlink(imageFile.path, (error) => {
-                if (error) { console.log('Error al eliminar imagen tras fallo:', err.message)}
+            fs.unlink(imageFile.path, (err) => {
+                if (err) {
+                    console.log('Error al eliminar imagen tras fallo:', err.message)
+                } else {
+                    console.log('Imagen eliminada tras fallo')
+                };
             });
         };
         res.status(500).json({ error: 'Error al guardar noticia o imagen', details: error });

@@ -1,22 +1,21 @@
 const API_BASE_URL = "http://localhost:3000"
 
-
 function getImageUrl(image) {
   if (!image || (Array.isArray(image) && image.length === 0)) {
-    return "/placeholder.jpg"; 
+    return "/placeholder.jpg"
   }
 
-  const imagePath = Array.isArray(image) ? image[0] : image;
+  const imagePath = Array.isArray(image) ? image[0] : image
 
   if (typeof imagePath !== "string") {
-    return "/placeholder.jpg";
+    return "/placeholder.jpg"
   }
 
   if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-    return imagePath;
+    return imagePath
   }
 
-  return `${API_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  return `${API_BASE_URL}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`
 }
 
 export function formatTimeAgo(dateString) {
@@ -37,21 +36,6 @@ export function formatTimeAgo(dateString) {
     day: "numeric",
   })
 }
-
-export function getCategoryClass(category) {
-  const categoryMap = {
-    Tecnología: "bg-red-600",
-    Deportes: "bg-green-600",
-    Política: "bg-blue-600",
-    Cultura: "bg-purple-600",
-    Economía: "bg-yellow-600",
-    Ciencia: "bg-teal-600",
-    Sociedad: "bg-pink-600",
-    Educación: "bg-indigo-600",
-  }
-  return categoryMap[category] || "bg-gray-600"
-}
-
 
 export function truncateText(text, maxLength) {
   if (text.length <= maxLength) return text
@@ -168,7 +152,6 @@ export function createSmallArticlesHTML(articles) {
                     <h4 class="font-semibold text-sm mb-2 line-clamp-3 transition-colors duration-300">${article.title}</h4>
                     <div class="flex items-center space-x-2 text-xs text-gray-500">
                         <span>${article.autor}</span>
-                        <p class="text-gray-600 text-sm line-clamp-2">${truncateText(article.content, 20)}</p>
                         <span>•</span>
                         <span>${timeAgo}</span>
                     </div>
@@ -186,23 +169,26 @@ export function createSmallArticlesHTML(articles) {
 }
 
 export function renderNews(articles) {
-  const newsGrid = document.getElementById("news-grid")
+  const newsGrid = document.getElementById("grids")
 
   if (!articles || articles.length === 0) {
     showError()
     return
   }
 
+  // Separar artículos por posición en el grid
   const mainArticle = articles[0]
   const secondaryArticles = articles.slice(1, 6)
   const smallArticles = articles.slice(6, 9)
 
   let gridHTML = ""
 
+  // Artículo principal
   if (mainArticle) {
     gridHTML += createMainArticleHTML(mainArticle)
   }
 
+  // Artículos secundarios con diferentes layouts
   secondaryArticles.forEach((article, index) => {
     if (index === 0) {
       gridHTML += createSecondaryArticleHTML(article, "large")
@@ -215,6 +201,7 @@ export function renderNews(articles) {
     }
   })
 
+  // Noticias pequeñas
   if (smallArticles.length > 0) {
     gridHTML += createSmallArticlesHTML(smallArticles)
   }
@@ -224,7 +211,7 @@ export function renderNews(articles) {
 
 export function showError() {
   document.getElementById("error-message")?.classList.remove("hidden")
-  const newsGrid = document.getElementById("news-grid")
+  const newsGrid = document.getElementById("grids")
   if (newsGrid) newsGrid.style.display = "none"
 }
 
@@ -234,16 +221,23 @@ export function hideLoading() {
 
 export async function fetchNews() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/notices/filters?limit=7`)
+    const response = await fetch(`${API_BASE_URL}/api/notices/filters?limit=9`)
 
     if (!response.ok) {
       throw new Error("API no disponible")
     }
 
     const result = await response.json()
-    return result.notices
-  } catch (error) {
 
-    await new Promise((resolve) => setTimeout(resolve, 25000))
+    if (result.success && result.notices) {
+      return result.notices
+    } else if (result.notices) {
+      return result.notices
+    } else {
+      throw new Error("Invalid API response structure")
+    }
+  } catch (error) {
+    console.error("Error fetching news:", error)
+    throw error
   }
 }
