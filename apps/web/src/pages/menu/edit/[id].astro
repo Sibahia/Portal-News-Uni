@@ -1,0 +1,9 @@
+---
+const { id } = Astro.params;
+import Dashboard from "../../../layouts/dashboard.astro";
+import EditPage from "../../../components/quills/EditPage"
+---
+
+<Dashboard title="Editar Noticia">
+    <EditPage client:only="react" noticeId={id} />
+</Dashboard>

@@ -67,27 +67,6 @@ const article = await getNoticeById(id);
   </main>
 </Layout>
 
-<script>
-  const token = localStorage.getItem("token");
-
-  fetch("http://localhost:3000/auth/profile", {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(res => {
-      if (!res.ok) {
-        window.location.href = "/error";
-        throw new Error("Error al obtener perfil");
-      }
-      return res.json();
-    })
-    .then(data => {
-      document.getElementById("avatar").textContent = data.user.user ? data.user.user.charAt(0) : '?';
-    })
-    .catch(error => {
-      console.error("Error:", error.message);
-    });
-</script>
-
 <style>
   img {
     border-radius: 0.375rem;
@@ -99,7 +78,6 @@ const article = await getNoticeById(id);
 
   .noticia-contenido :global(img) {
     border-radius: 0.375rem;
-    padding-bottom: 8px;
   }
 
 </style>

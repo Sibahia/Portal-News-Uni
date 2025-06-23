@@ -212,7 +212,7 @@ const EditorForm = () => {
                     <p className="text-lg font-medium text-gray-700">
                       Arrastra una imagen aquí o haz clic para seleccionar
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">PNG, JPG, GIF hasta 10MB</p>
+                    <p className="text-sm text-gray-500 mt-2">PNG, JPG, GIF hasta 80MB</p>
                   </div>
 
                   <div className="flex items-center justify-center">

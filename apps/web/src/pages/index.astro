@@ -4,7 +4,7 @@ import NewsGrid from '../components/notices/NewsGrid.astro';
 
 async function fetchNewsFromAPI() {
   try {
-    const response = await fetch('http://localhost:3000/api/notices/filters?limit=9');
+    const response = await fetch('http://localhost:3000/api/notices/filters?limit=7');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

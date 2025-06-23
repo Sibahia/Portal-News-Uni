@@ -54,37 +54,38 @@ router.get('/filters', (req, res) => {
 router.post('/', upload.single('image'), (req, res) => {
     const { title, autor, content } = req.body;
     const imageFile = req.file;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+    const imagePath = imageFile ? `/uploads/${imageFile.filename}` : null;
     const date = new Date().toISOString().split('.')[0] + 'Z';
-
+    
     dbSQL.insert('notices', {
-        autor: autor,
-        title: title,
-        content: content,
+        autor,
+        title,
+        content,
         time_created: date
     })
     .then(noticeId => {
         if (imagePath) {
             return dbSQL.insert('images', {
-                notice_id: noticeId,
-                image_path: imagePath
+            notice_id: noticeId,
+            image_path: imagePath
             });
         }
-    }).then(() => {
+    })
+    .then(() => {
         res.status(201).json({ message: 'Noticia e imagen guardadas correctamente' });
-    }).catch(error => {
-
-        if (imageFile && imageFile.path) {
-            fs.unlink(imageFile.path, (err) => {
-                if (err) {
-                    console.log('Error al eliminar imagen tras fallo:', err.message)
-                } else {
-                    console.log('Imagen eliminada tras fallo')
-                };
-            });
+    })
+    .catch(error => {
+        if (imageFile?.path) {
+          fs.unlink(imageFile.path, err => {
+            if (err) {
+              console.log('Error al eliminar imagen tras fallo:', err.message);
+            } else {
+              console.log('Imagen eliminada tras fallo');
+            }
+          });
         };
-        res.status(500).json({ error: 'Error al guardar noticia o imagen', details: error });
-    });
+    res.status(500).json({ error: 'Error al guardar noticia o imagen', details: error });
+  });
 });
 
 router.post('/:id/image', upload.single('image'), (req, res) => {
@@ -106,6 +107,31 @@ router.post('/:id/image', upload.single('image'), (req, res) => {
         res.status(500).json({ message: 'Error al guardar la imagen', error });
     });
 });
+
+router.post('/upload-image', upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No se subió imagen' });
+
+  const imagePath = `http://localhost:3000/uploads/${req.file.filename}`;
+  res.status(200).json({ url: imagePath }); 
+});
+
+router.delete('/delete-image/:filename', (req, res) => {
+    const { filename } = req.params;
+    const filePath = path.join(__dirname, '../public/uploads', filename);
+
+    if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error eliminando imagen:', err);
+                return res.status(500).json({ error: 'Error eliminando imagen' });
+            }
+            res.status(200).json({ message: 'Imagen eliminada correctamente' });
+        });
+    } else {
+        res.status(404).json({ error: 'Imagen no encontrada' });
+    };
+});
+
 
 
 module.exports = router;

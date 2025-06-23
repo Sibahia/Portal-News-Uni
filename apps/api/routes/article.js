@@ -25,6 +25,7 @@ router.put('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { title, autor, content } = req.body;
+    console.log({ title, autor, content })
 
     if (isNaN(id) || !title || !autor || !content) {
       return res.status(400).json({ message: 'Datos incompletos o ID inválido' });

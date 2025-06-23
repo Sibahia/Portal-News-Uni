@@ -24,6 +24,20 @@ function truncateText(text, maxLength = 80) {
   if (!text) return 'Sin contenido';
   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
+
+function formatFullDate(dateString) {
+    if (!dateString) return 'Fecha no disponible';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
 ---
 
 <div class="w-full max-w-7xl mx-auto p-6 bg-white">
@@ -121,12 +135,8 @@ function truncateText(text, maxLength = 80) {
                       Ver
                     </button>
                     <button 
-                      class="text-indigo-600 bg-indigo-200 rounded-md p-1 hover:text-indigo-900 transition-colors duration-200 edit-btn"
-                      data-notice-id={notice.id}
-                      data-notice-title={notice.title || 'Sin título'}
-                      data-notice-author={notice.autor || 'Sin autor'}
-                      data-notice-content={notice.content || 'Sin contenido'}
-                      data-notice-date={notice.time_created || ''}
+                      onclick={`window.location.href='edit/${notice.id}'`}
+                      class="text-indigo-600 bg-indigo-200 rounded-md p-1 hover:text-indigo-900 transition-colors duration-200"
                     >
                       Editar
                     </button>
@@ -163,12 +173,8 @@ function truncateText(text, maxLength = 80) {
                 <div class="flex space-x-2">
                   <button class="text-blue-600 hover:text-blue-900 text-sm">Ver</button>
                   <button 
-                    class="text-indigo-600 hover:text-indigo-900 text-sm edit-btn"
-                    data-notice-id={notice.id}
-                    data-notice-title={notice.title || 'Sin título'}
-                    data-notice-author={notice.autor || 'Sin autor'}
-                    data-notice-content={notice.content || 'Sin contenido'}
-                    data-notice-date={notice.time_created || ''}
+                    onclick={`window.location.href='/edit-notice/${notice.id}'`}
+                    class="text-indigo-600 hover:text-indigo-900 text-sm"
                   >
                     Editar
                   </button>
@@ -220,137 +226,8 @@ function truncateText(text, maxLength = 80) {
     </div>
   </div>
 
-  <div id="noticeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden">
-  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
-    <div class="flex items-center justify-between pb-4 border-b border-gray-200">
-      <h3 class="text-xl font-semibold text-gray-900">
-        Editar Aviso
-      </h3>
-      <button id="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-    </div>
-
-    <form id="editNoticeForm" class="mt-6 space-y-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <span id="modalId" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-            #1
-          </span>
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-            Activo
-          </span>
-        </div>
-        <div class="text-sm text-gray-500" id="modalDate">
-          Fecha no disponible
-        </div>
-      </div>
-
-      <div>
-        <label for="editTitle" class="block text-sm font-medium text-gray-700 mb-2">Título *</label>
-        <input 
-          type="text" 
-          id="editTitle" 
-          name="title"
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
-          placeholder="Ingrese el título del aviso"
-        />
-      </div>
-
-      <div>
-        <label for="editAuthor" class="block text-sm font-medium text-gray-700 mb-2">Autor *</label>
-        <div class="flex items-center space-x-3">
-          <div class="flex-shrink-0 h-10 w-10">
-            <div id="modalAuthorAvatar" class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
-              <span class="text-sm font-medium text-white">A</span>
-            </div>
-          </div>
-          <input 
-            type="text" 
-            id="editAuthor" 
-            name="author"
-            required
-            class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
-            placeholder="Nombre del autor"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label for="editContent" class="block text-sm font-medium text-gray-700 mb-2">Contenido *</label>
-        <textarea 
-          id="editContent" 
-          name="content"
-          required
-          rows="6"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-vertical"
-          placeholder="Escriba el contenido del aviso..."
-        ></textarea>
-        <div class="mt-1 text-sm text-gray-500">
-          <span id="contentCounter">0</span> caracteres
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Creación</label>
-          <div id="modalFullDate" class="text-sm text-gray-600 p-2 bg-gray-50 rounded">
-            Fecha completa aparecerá aquí
-          </div>
-        </div>
-      </div>
-
-      <input type="hidden" id="editId" name="id" />
-    </form>
-
-    <div class="flex items-center justify-end pt-6 border-t border-gray-200 space-x-3">
-      <button id="cancelModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
-        Cancelar
-      </button>
-      <button id="saveChanges" type="button" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2">
-        <span id="saveText">Guardar Cambios</span>
-        <svg id="loadingSpinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="alertContainer" class="fixed top-4 right-4 z-60 space-y-2"></div>
 
 <script>
-  const modal = document.getElementById('noticeModal');
-  const closeModalBtn = document.getElementById('closeModal');
-  const cancelModalBtn = document.getElementById('cancelModal');
-  const saveChangesBtn = document.getElementById('saveChanges');
-  const editButtons = document.querySelectorAll('.edit-btn');
-  const form = document.getElementById('editNoticeForm');
-  const alertContainer = document.getElementById('alertContainer');
-
-  const editTitle = document.getElementById('editTitle');
-  const editAuthor = document.getElementById('editAuthor');
-  const editContent = document.getElementById('editContent');
-  const contentCounter = document.getElementById('contentCounter');
-
-  function formatFullDate(dateString) {
-    if (!dateString) return 'Fecha no disponible';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  };
-
   document.querySelectorAll('button[data-id]').forEach(btn => {
   btn.addEventListener('click', () => {
     const id = btn.dataset.id;
@@ -417,18 +294,21 @@ function truncateText(text, maxLength = 80) {
       </div>
     `;
 
-    alertContainer.insertAdjacentHTML('beforeend', alertHTML);
+    const alertContainer = document.getElementById('alertContainer');
+    if (alertContainer) {
+      alertContainer.insertAdjacentHTML('beforeend', alertHTML);
     
-    setTimeout(() => {
-      const alertElement = document.getElementById(alertId);
-      if (alertElement) {
-        alertElement.classList.remove('translate-x-full');
-      }
-    }, 100);
+      setTimeout(() => {
+        const alertElement = document.getElementById(alertId);
+        if (alertElement) {
+          alertElement.classList.remove('translate-x-full');
+        }
+      }, 100);
 
-    setTimeout(() => {
-      removeAlert(alertId);
-    }, 5000);
+      setTimeout(() => {
+        removeAlert(alertId);
+      }, 5000);
+    }
   }
 
   window.removeAlert = function(alertId) {
@@ -440,156 +320,6 @@ function truncateText(text, maxLength = 80) {
       }, 300);
     }
   }
-
-  function updateCharacterCounter() {
-    const count = editContent.value.length;
-    contentCounter.textContent = count;
-    
-    if (count > 500) {
-      contentCounter.classList.add('text-red-500');
-    } else if (count > 400) {
-      contentCounter.classList.add('text-yellow-500');
-      contentCounter.classList.remove('text-red-500');
-    } else {
-      contentCounter.classList.remove('text-red-500', 'text-yellow-500');
-    }
-  }
-
-  function updateAuthorAvatar() {
-    const avatar = document.getElementById('modalAuthorAvatar');
-    const authorName = editAuthor.value.trim();
-    const initial = authorName ? authorName.charAt(0).toUpperCase() : '?';
-    avatar.querySelector('span').textContent = initial;
-  }
-
-  function openModal(noticeData) {
-    document.getElementById('modalId').textContent = `#${noticeData.id}`;
-    document.getElementById('editId').value = noticeData.id;
-    document.getElementById('editTitle').value = noticeData.title;
-    document.getElementById('editAuthor').value = noticeData.author;
-    document.getElementById('editContent').value = noticeData.content;
-    document.getElementById('modalDate').textContent = formatFullDate(noticeData.date);
-    document.getElementById('modalFullDate').textContent = formatFullDate(noticeData.date);
-    
-    updateCharacterCounter();
-    updateAuthorAvatar();
-    
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    
-    setTimeout(() => {
-      editTitle.focus();
-    }, 100);
-  }
-
-  function closeModal() {
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    form.reset();
-  }
-
-  function setLoadingState(loading) {
-    const saveText = document.getElementById('saveText');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    
-    if (loading) {
-      saveText.textContent = 'Guardando...';
-      loadingSpinner.classList.remove('hidden');
-      saveChangesBtn.disabled = true;
-      saveChangesBtn.classList.add('opacity-75', 'cursor-not-allowed');
-    } else {
-      saveText.textContent = 'Guardar Cambios';
-      loadingSpinner.classList.add('hidden');
-      saveChangesBtn.disabled = false;
-      saveChangesBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-    }
-  }
-
-  async function saveChanges() {
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-
-    const formData = new FormData(form);
-    const noticeData = {
-      id: formData.get('id'),
-      title: formData.get('title'),
-      autor: formData.get('author'),
-      content: formData.get('content'),
-      status: formData.get('status')
-    };
-
-    setLoadingState(true);
-
-    try {
-      const response = await fetch(`http://localhost:3000/api/notices/article/${noticeData.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(noticeData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      
-      showAlert('¡Aviso actualizado exitosamente!', 'success');
-      closeModal();
-      
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-
-    } catch (error) {
-      console.error('Error saving notice:', error);
-      showAlert(`Error al guardar: ${error.message}`, 'error');
-    } finally {
-      setLoadingState(false);
-    }
-  }
-
-  editButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const noticeData = {
-        id: this.dataset.noticeId,
-        title: this.dataset.noticeTitle,
-        author: this.dataset.noticeAuthor,
-        content: this.dataset.noticeContent,
-        date: this.dataset.noticeDate
-      };
-      openModal(noticeData);
-    });
-  });
-
-  closeModalBtn.addEventListener('click', closeModal);
-  cancelModalBtn.addEventListener('click', closeModal);
-  saveChangesBtn.addEventListener('click', saveChanges);
-
-  editContent.addEventListener('input', updateCharacterCounter);
-  editAuthor.addEventListener('input', updateAuthorAvatar);
-
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-      closeModal();
-    }
-  });
-
-  form.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      saveChanges();
-    }
-  });
 </script>
 
 <style>
