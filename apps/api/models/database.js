@@ -107,31 +107,71 @@ class sqlORM {
         });
     };
 
-    findLimit(tableName, limit) {
-        const sql = `SELECT * FROM ${tableName} LIMIT ?`;
+    findLimit(tableName, order, limit) {
+        if (typeof limit !== 'number' || limit < 1) {
+            return Promise.reject({ error: 'El límite debe ser un número entero mayor o igual a 1' });
+        }
+
+        let sql = `SELECT * FROM ${tableName}`;
+
+        const validDirections = ['ASC', 'DESC'];
+
+        if (typeof order === 'string' && validDirections.includes(order.toUpperCase())) {
+            sql += ` ORDER BY id ${order.toUpperCase()}`;
+        }
+
+        else if (Array.isArray(order) && Array.isArray(order[0])) {
+            const clauses = order
+                .filter(([key, dir]) =>
+                    typeof key === 'string' &&
+                    /^[a-zA-Z0-9_]+$/.test(key) &&
+                    validDirections.includes(dir?.toUpperCase())
+                )
+                .map(([key, dir]) => `${key} ${dir.toUpperCase()}`)
+                .join(', ');
+            if (clauses) {
+                sql += ` ORDER BY ${clauses}`;
+            }
+        }
+
+        else if (Array.isArray(order) && order.length === 2) {
+            const [key, dir] = order;
+            const direction = dir?.toUpperCase();
+            if (
+                typeof key === 'string' &&
+                /^[a-zA-Z0-9_]+$/.test(key) &&
+                validDirections.includes(direction)
+            ) {
+                sql += ` ORDER BY ${key} ${direction}`;
+            }
+        }
+
+        sql += ' LIMIT ?';
 
         return new Promise((resolve, reject) => {
             this.db.all(sql, [limit], (error, rows) => {
                 if (error) {
-                    reject({ error: 'Error obteniendo datos con límites', details: error.message })
+                    reject({ error: 'Error obteniendo datos con límites', details: error.message });
                 } else {
                     resolve(rows);
-                };
+                }
+            });
+        });
+    }
+
+
+    findAllJoin({ sql, params = [] }) {
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, params, (error, rows) => {
+                if (error) {
+                    reject({ error: 'Error ejecutando la consulta JOIN', details: error.message });
+                } else {
+                    resolve(rows);
+                }
             });
         });
     };
 
-    findAllJoin(params) {
-        return new Promise((resolve, reject) => {
-            this.db.all(params, (error, rows) => {
-                if (error) {
-                    reject({ error: 'Error ejecutando la consulta JOIN', details: error.message })
-                } else {
-                    resolve(rows);
-                };
-            });
-        });
-    };
 
     getAll(tableName) {
         const sql = `SELECT * FROM ${tableName}`;

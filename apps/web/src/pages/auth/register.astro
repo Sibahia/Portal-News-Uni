@@ -48,12 +48,10 @@ async function sendRegisterData (event) {
     })
     .then(res => res.json())
     .then(data => {
-        if (data.token) {
-            localStorage.setItem('token', data.token);
-        } else {
-            console.error('Error al registrar usuario', data.message)
-        }
+        if (!data.token) { console.error('Error al registrar usuario', data.message) }
 
+        localStorage.setItem('token', data.token);
+        window.location.replace("/menu");
     })
     .catch(error => console.log(error))
 

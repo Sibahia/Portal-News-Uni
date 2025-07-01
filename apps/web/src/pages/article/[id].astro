@@ -31,7 +31,7 @@ const article = await getNoticeById(id);
               <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 text-gray-600">
                 <div class="flex items-center space-x-3">
                   <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
-                    <span id="avatar" class="text-sm font-medium text-white"></span>
+                    <span id="avatar" class="text-sm font-medium text-white">{article.autor ? article.autor.charAt(0) : '?'}</span>
                   </div>
                   <div class="text-left">
                     <div class="flex items-center space-x-1">
@@ -57,7 +57,7 @@ const article = await getNoticeById(id);
             <div class="noticia-contenido max-w-none text-gray-800 leading-relaxed text-lg">
               <Fragment set:html={article.content} />
             </div>
-            {/* <div class="max-w-none text-gray-800 leading-relaxed text-lg" set:html={article.content}></div> */}
+            {}
           </div>
         </>
       ) : (

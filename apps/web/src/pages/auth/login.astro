@@ -50,10 +50,10 @@ import LogoBadge from "../../components/badge/Logo.astro";
         })
         .then(res => res.json())
         .then(data => {
-            if (!data.token) { console.log("Error al registrar usuario: ", data.message) }
+            if (!data.token) { console.log("Error al iniciar usuario: ", data.message) }
 
             localStorage.setItem("token", data.token);
-            window.location.replace("/auth/profile");
+            window.location.replace("/menu");
         })
         .catch(err => {
             console.log(err)

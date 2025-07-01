@@ -3,21 +3,17 @@
 import { useState, useEffect, useRef } from "react"
 import QuillChanges from "./QuillChanges.jsx"
 
-// Función para normalizar URLs de imágenes
 const normalizeImageUrl = (url) => {
   if (!url) return null;
   
-  // Si ya es una URL completa, no hacer cambios
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
   
-  // Si comienza con /uploads/, agregar el dominio base
   if (url.startsWith('/uploads/')) {
     return `http://localhost:3000${url}`;
   }
   
-  // Para cualquier otro caso, devolver tal cual
   return url;
 };
 
@@ -29,14 +25,12 @@ const EditPage = ({ noticeId }) => {
   const [error, setError] = useState(null)
   const [hasChanges, setHasChanges] = useState(false)
 
-  // Form states
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [selectedImage, setSelectedImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [currentImage, setCurrentImage] = useState(null)
 
-  // Fetch notice data
   useEffect(() => {
     const fetchNotice = async () => {
       try {
@@ -52,7 +46,6 @@ const EditPage = ({ noticeId }) => {
         setTitle(data.notice.title || "")
         setAuthor(data.notice.autor || "")
         
-        // Normalizar la URL de la imagen
         setCurrentImage(normalizeImageUrl(data.notice.image))
       } catch (err) {
         setError(err.message)
@@ -91,7 +84,6 @@ const EditPage = ({ noticeId }) => {
     setHasChanges(true)
   }
 
-  // Handle form changes
   const handleTitleChange = (e) => {
     setTitle(e.target.value)
     setHasChanges(true)
@@ -102,7 +94,6 @@ const EditPage = ({ noticeId }) => {
     setHasChanges(true)
   }
 
-  // Save changes
  const handleSave = async () => {
     if (!quillRef.current) return;
 
@@ -112,18 +103,16 @@ const EditPage = ({ noticeId }) => {
       const content = quillRef.current.getContent();
       let imageUrl = null;
 
-      // Subir nueva imagen si existe
       if (selectedImage) {
         imageUrl = await uploadImage(selectedImage);
+
       } else if (!currentImage && !selectedImage) {
-        // Si se eliminó la imagen actual
         imageUrl = null;
+
       } else {
-        // Mantener la imagen actual
         imageUrl = currentImage;
       }
 
-      // Crear objeto con los datos
       const noticeData = {
         title,
         autor: author,
@@ -157,7 +146,6 @@ const EditPage = ({ noticeId }) => {
     }
   };
 
-  // Alert system
   const showAlert = (message, type = "success") => {
     const alertContainer = document.getElementById("alert-container") || createAlertContainer()
 
@@ -195,7 +183,6 @@ const EditPage = ({ noticeId }) => {
     return container
   }
 
-  // Format date
   const formatDate = (dateString) => {
     if (!dateString) return "Fecha no disponible"
     return new Date(dateString).toLocaleDateString("es-ES", {
@@ -249,7 +236,7 @@ const EditPage = ({ noticeId }) => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-6">
-        {/* Header */}
+        {}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -283,7 +270,7 @@ const EditPage = ({ noticeId }) => {
           </div>
         </div>
 
-        {/* Main Form */}
+        {}
         <article className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           {/* Form Header */}
           <header className="bg-gradient-to-r from-indigo-50 to-purple-50 px-8 py-6 border-b border-gray-100">
@@ -314,7 +301,7 @@ const EditPage = ({ noticeId }) => {
           </header>
 
           <div className="p-8 space-y-8">
-            {/* Title Section */}
+            {}
             <section className="space-y-3">
               <label htmlFor="title" className="block text-sm font-semibold text-gray-700">
                 Título del Aviso *
@@ -330,7 +317,7 @@ const EditPage = ({ noticeId }) => {
               />
             </section>
 
-            {/* Author Section */}
+            {}
             <section className="space-y-3">
               <label htmlFor="author" className="block text-sm font-semibold text-gray-700">
                 Autor *
@@ -355,11 +342,11 @@ const EditPage = ({ noticeId }) => {
               </div>
             </section>
 
-            {/* Image Section */}
+            {}
             <section className="space-y-4">
               <label className="block text-sm font-semibold text-gray-700">Imagen del Aviso</label>
 
-              {/* Current Image */}
+              {}
               {currentImage && !imagePreview && (
                 <div className="relative bg-gray-50 rounded-xl p-4 border border-gray-200">
                   <div className="flex items-start space-x-4">
@@ -382,7 +369,7 @@ const EditPage = ({ noticeId }) => {
                 </div>
               )}
 
-              {/* New Image Preview */}
+              {}
               {imagePreview && (
                 <div className="relative bg-gray-50 rounded-xl p-4 border border-gray-200">
                   <div className="flex items-start space-x-4">
@@ -407,7 +394,7 @@ const EditPage = ({ noticeId }) => {
                 </div>
               )}
 
-              {/* Upload Area */}
+              {}
               {!currentImage && !imagePreview && (
                 <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-indigo-400 hover:bg-indigo-50/50 transition-all duration-200 cursor-pointer">
                   <input
@@ -439,7 +426,7 @@ const EditPage = ({ noticeId }) => {
               )}
             </section>
 
-            {/* Content Editor */}
+            {}
             <section className="space-y-4">
               <label className="block text-sm font-semibold text-gray-700">Contenido del Aviso *</label>
               <div className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all duration-200">
@@ -450,7 +437,7 @@ const EditPage = ({ noticeId }) => {
             </section>
           </div>
 
-          {/* Footer */}
+          {}
           <footer className="bg-gray-50 px-8 py-6 border-t border-gray-100">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-500">Última modificación: {formatDate(notice?.time_created)}</div>

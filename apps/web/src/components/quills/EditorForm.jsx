@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import QuillEditor from "./QuillEditor.jsx"
 
+document.getElementById('redactar')?.classList.add('bg-blue-500', 'text-white')
+
 const EditorForm = () => {
   const quillRef = useRef(null)
   const fileInputRef = useRef(null)
@@ -126,7 +128,7 @@ const EditorForm = () => {
   return (
     <div className="max-w-6xl mx-auto p-4">
       <article className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        {/* Header */}
+        {}
         <header className="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-6 border-b border-gray-100">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -147,7 +149,7 @@ const EditorForm = () => {
         </header>
 
         <div className="p-8 space-y-8">
-          {/* Title Section */}
+          {}
           <section className="space-y-2">
             <label htmlFor="titulo" className="block text-sm font-semibold text-gray-700 mb-3">
               Título del Publicación *
@@ -270,7 +272,7 @@ const EditorForm = () => {
             )}
           </section>
 
-          {/* Content Editor Section */}
+          {}
           <section className="space-y-4">
             <label className="block text-sm font-semibold text-gray-700">Contenido del Publicación *</label>
             <div className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
@@ -282,7 +284,7 @@ const EditorForm = () => {
           </section>
         </div>
 
-        {/* Footer */}
+        {}
         <footer className="bg-gray-50 px-8 py-6 border-t border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-sm text-gray-500">

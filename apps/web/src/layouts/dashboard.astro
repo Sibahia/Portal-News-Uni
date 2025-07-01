@@ -20,13 +20,13 @@ const { title } = Astro.props;
 	<body class="bg-gris-claro">
 		<div class="flex h-screen">
 
-        <aside class="w-44 p-4 flex flex-col items-center">
+        <aside class="w-44 p-4 flex shadow flex-col items-center">
             <Nombre />
             <nav>
-                <ul class="pt-5 grid gap-4 font-medium text-gray-500">
-                    <li><a href="/menu" class="block py-2 px-4 rounded-lg transition duration-150 hover:bg-blue-500 hover:text-light-w2">Inicio</a></li>
-                    <li><a href="/menu/noticias" class="block py-2 px-4 rounded-lg transition duration-150 hover:bg-blue-500 hover:text-light-w2">Noticias</a></li>
-                    <li><a href="/menu/redactar" class="block py-2 px-4 rounded-lg transition duration-150 hover:bg-blue-500 hover:text-light-w2">Redactar</a></li>
+                <ul class="pt-5 grid gap-4 text-center font-medium text-gray-500">
+                    <li><a href="/menu" id="inicio" class="block py-2 px-4 rounded-xl transition duration-150 hover:bg-blue-500 hover:text-light-w2">Inicio</a></li>
+                    <li><a href="/menu/noticias" id="noticias" class="block py-2 px-4 rounded-xl transition duration-150 hover:bg-blue-500 hover:text-light-w2">Noticias</a></li>
+                    <li><a href="/menu/redactar" id="redactar" class="block py-2 px-4 rounded-xl transition duration-150 hover:bg-blue-500 hover:text-light-w2">Redactar</a></li>
                 </ul>
             </nav>
         </aside>

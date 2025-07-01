@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     })
     .then(images => {
         const combined = notices.map(notice => {
-            const noticeImages = images.filter(img => img.notice_id === notice.id).map(img => img.image_path)
+            const noticeImages = images.filter(img => img.notice_id === notice.id).map(img => `http://localhost:3000${img.image_path}`)
             
             return {
                 ...notice,
@@ -29,27 +29,41 @@ router.get('/', (req, res) => {
     .catch(error => res.status(400).json(error.message))
 });
 
-router.get('/filters', (req, res) => {
-        const limit = parseInt(req.query.limit) || 8;
+router.get('/filters', async (req, res) => {
+    const limit = parseInt(req.query.limit) || 7;
+    const direction = req.query.order?.toUpperCase();
+    const validDirections = ['ASC', 'DESC'];
+    const order = validDirections.includes(direction) ? direction : null;
 
-        dbSQL.findLimit('notices', limit)
-        .then(news => {
-            notices = news;
-            return dbSQL.findLimit('images', limit)
-        })
-        .then(images => {
-            const combined = notices.map(notice => {
-                const noticeImages = images.filter(img => img.notice_id === notice.id).map(img => img.image_path)
+    try {
+        const notices = await dbSQL.findLimit('notices', order, limit);
+        if (!notices.length) {
+            return res.status(200).json({ notices: [] });
+        }
 
-                return {
-                    ...notice,
-                    image: noticeImages
-                };
-            });
-            res.status(200).json({ notices: combined })
-        })
-        .catch(error => res.status(400).json(error.message))
+        const ids = notices.map(n => n.id);
+        const placeholders = ids.map(() => '?').join(', ');
+        const sql = `SELECT * FROM images WHERE notice_id IN (${placeholders})`;
+        const images = await dbSQL.findAllJoin({ sql, params: ids });
+
+        const combined = notices.map(notice => {
+            const noticeImages = images
+                .filter(img => img.notice_id === notice.id)
+                .map(img => `http://localhost:3000${img.image_path}`);
+
+            return {
+                ...notice,
+                image: noticeImages
+            };
+        });
+
+        res.status(200).json({ notices: combined });
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
+
+
 
 router.post('/', upload.single('image'), (req, res) => {
     const { title, autor, content } = req.body;

@@ -14,12 +14,10 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
   useEffect(() => {
     if (!containerRef.current) return;
     
-    // Destruir instancia anterior si existe
     if (quillRef.current) {
       quillRef.current = null;
     }
     
-    // Crear nueva instancia de Quill
     const editor = new Quill(containerRef.current, {
       theme: "snow",
       modules: {
@@ -32,7 +30,6 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
             ["clean"],
           ],
           handlers: {
-            // Manejador personalizado para imágenes
             image: () => fileInputRef.current?.click()
           }
         },
@@ -42,14 +39,12 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
       },
     });
     
-    // Establecer contenido inicial
     if (initialContent) {
       editor.clipboard.dangerouslyPasteHTML(initialContent);
-      // Extraer imágenes del contenido inicial
+
       extractImagesFromContent(initialContent);
     }
     
-    // Evento para detectar cuando se elimina una imagen
     editor.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
         checkForDeletedImages();
@@ -59,14 +54,12 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     quillRef.current = editor;
     
     return () => {
-      // Limpiar al desmontar
       if (quillRef.current) {
         quillRef.current = null;
       }
     };
   }, [initialContent]);
 
-  // Extraer imágenes del contenido HTML
   const extractImagesFromContent = (html) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -80,14 +73,12 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     });
   };
 
-  // Verificar si se eliminaron imágenes
   const checkForDeletedImages = () => {
     const content = quillRef.current.root.innerHTML;
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     const currentImages = new Set();
     
-    // Recoger todas las imágenes actuales
     doc.querySelectorAll('img').forEach(img => {
       const src = img.getAttribute('src');
       if (src) {
@@ -95,24 +86,19 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
       }
     });
     
-    // Encontrar imágenes que estaban pero ya no están
     const deletedImages = [...uploadedImages.current].filter(
       img => !currentImages.has(img)
     );
     
-    // Eliminar las imágenes del backend
     deletedImages.forEach(img => {
       deleteImageFromServer(img);
     });
     
-    // Actualizar el conjunto de imágenes
     uploadedImages.current = currentImages;
   };
 
-  // Eliminar imagen del servidor
   const deleteImageFromServer = async (imageUrl) => {
     try {
-      // Extraer solo el nombre del archivo de la URL completa
       const fileName = imageUrl.split('/').pop();
       
       const response = await fetch(`http://localhost:3000/api/notices/delete-image/${fileName}`, {
@@ -129,7 +115,6 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     }
   };
 
-  // Manejador para subida de imágenes
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("image", file);
@@ -149,7 +134,6 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     }
   };
 
-  // Manejador para cambio de archivo
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -157,17 +141,15 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     try {
       const imageUrl = await handleImageUpload(file);
       
-      // Agregar la nueva imagen al conjunto
       uploadedImages.current.add(imageUrl);
       
-      // Insertar la imagen en el editor
       const range = quillRef.current.getSelection(true);
       quillRef.current.insertEmbed(range.index, "image", imageUrl, "user");
       quillRef.current.setSelection(range.index + 1);
     } catch (error) {
       console.error("Error insertando imagen:", error);
     } finally {
-      e.target.value = ""; // Reset input
+      e.target.value = "";
     }
   };
 
@@ -179,7 +161,7 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
     setContent: (html) => {
       if (!quillRef.current) return;
       quillRef.current.clipboard.dangerouslyPasteHTML(html);
-      // Extraer imágenes del nuevo contenido
+
       extractImagesFromContent(html);
     }
   }));
@@ -187,7 +169,7 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
   return (
     <div>
       <div ref={containerRef} style={{ minHeight: 150 }} className="quill-editor-container" />
-      {/* Input oculto para manejar imágenes */}
+      {}
       <input
         type="file"
         ref={fileInputRef}
@@ -200,63 +182,3 @@ const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
 });
 
 export default QuillChanges;
-// import React, { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
-// import Quill from "quill";
-// import "quill/dist/quill.snow.css";
-
-// const QuillChanges = forwardRef(({ initialContent = "" }, ref) => {
-//   const containerRef = useRef(null);
-//   const quillRef = useRef(null);
-  
-//   useEffect(() => {
-//     if (!containerRef.current) return;
-    
-//     // Destruir instancia anterior si existe
-//     if (quillRef.current) {
-//       quillRef.current = null;
-//     }
-    
-//     // Crear nueva instancia de Quill
-//     const editor = new Quill(containerRef.current, {
-//       theme: "snow",
-//       modules: {
-//         toolbar: [
-//           [{ header: [1, 2, false] }],
-//           ["bold", "italic", "underline"],
-//           ["link", "blockquote", "code-block", "image"],
-//           [{ list: "ordered" }, { list: "bullet" }],
-//           ["clean"],
-//         ],
-//       },
-//     });
-    
-//     // Establecer contenido inicial
-//     if (initialContent) {
-//       editor.clipboard.dangerouslyPasteHTML(initialContent);
-//     }
-    
-//     quillRef.current = editor;
-    
-//     return () => {
-//       // Limpiar al desmontar
-//       if (quillRef.current) {
-//         quillRef.current = null;
-//       }
-//     };
-//   }, [initialContent]);
-
-//   useImperativeHandle(ref, () => ({
-//     getContent: () => {
-//       if (!quillRef.current) return "";
-//       return containerRef.current.querySelector(".ql-editor").innerHTML;
-//     },
-//     setContent: (html) => {
-//       if (!quillRef.current) return;
-//       quillRef.current.clipboard.dangerouslyPasteHTML(html);
-//     }
-//   }));
-
-//   return <div ref={containerRef} style={{ minHeight: 150 }} className="quill-editor-container" />;
-// });
-
-// export default QuillChanges;
